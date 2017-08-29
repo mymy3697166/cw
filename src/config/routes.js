@@ -30,5 +30,10 @@ Navigation.startTabBasedApp({
     tabBarSelectedButtonColor: MAINCOLOR,
     tabBarCenterButtonImage: require('../assets/tab_center.png'),
     tabBarTranslucent: false,
+    forceTitlesDisplay: true
+  },
+  appStyle: {
+    tabBarSelectedButtonColor: MAINCOLOR,
+    tabBarTranslucent: false
   }
 });

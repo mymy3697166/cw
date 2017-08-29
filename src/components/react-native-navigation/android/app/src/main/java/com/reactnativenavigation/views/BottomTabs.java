@@ -1,11 +1,14 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.ScreenParams;
@@ -26,12 +29,13 @@ public class BottomTabs extends AHBottomNavigation {
         createVisibilityAnimator();
         setStyle();
         setFontFamily();
+        Drawable drawable = context.getResources().getDrawable(R.drawable.background_with_shadow);
+        setBackground(drawable);
     }
 
     public void addTabs(List<ScreenParams> params, OnTabSelectedListener onTabSelectedListener) {
         for (ScreenParams screenParams : params) {
-            AHBottomNavigationItem item = new AHBottomNavigationItem(screenParams.tabLabel, screenParams.tabIcon,
-                    Color.GRAY);
+            AHBottomNavigationItem item = new AHBottomNavigationItem(screenParams.tabLabel, screenParams.tabIcon, Color.GRAY);
             addItem(item);
             setOnTabSelectedListener(onTabSelectedListener);
         }

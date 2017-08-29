@@ -13,7 +13,11 @@ const Styles = {
   navigatorStyle: {
     navBarNoBorder: true,
     navBarBackgroundColor: MAINCOLOR,
-    navBarTextColor: '#fff'
+    navBarTextColor: '#fff',
+    navBarTitleTextCentered: true,
+    topBarElevationShadowEnabled: false,
+    statusBarColor: MAINCOLOR,
+    navBarHeight: 44
   }
 };
 
