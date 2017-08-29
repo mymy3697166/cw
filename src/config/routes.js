@@ -1,10 +1,12 @@
 import { Navigation } from '../components/react-native-navigation/src';
-import { Discovery, Category } from '../views';
+import { ViewDiscovery, ViewCategory, ComponentAvatar, ViewDrawer } from '../views';
 import { MAINCOLOR } from './constants';
 
+Navigation.registerComponent('Avatar', () => ComponentAvatar);
 
-Navigation.registerComponent('Discovery', () => Discovery);
-Navigation.registerComponent('Category', () => Category);
+Navigation.registerComponent('Drawer', () => ViewDrawer)
+Navigation.registerComponent('Discovery', () => ViewDiscovery);
+Navigation.registerComponent('Category', () => ViewCategory);
 
 Navigation.startTabBasedApp({
   tabs: [
@@ -21,7 +23,12 @@ Navigation.startTabBasedApp({
       title: '分类'
     }
   ],
+  drawer: {
+    left: {screen: 'Drawer'}
+  },
   tabsStyle: {
-    tabBarSelectedButtonColor: MAINCOLOR
+    tabBarSelectedButtonColor: MAINCOLOR,
+    tabBarCenterButtonImage: require('../assets/tab_center.png'),
+    tabBarTranslucent: false,
   }
 });

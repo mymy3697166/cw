@@ -9,4 +9,12 @@ const MAINCOLORS = [
 ];
 const MAINCOLOR = MAINCOLORS[new Date().getDay()];
 
-export { MAINCOLOR };
+const Styles = {
+  navigatorStyle: {
+    navBarNoBorder: true,
+    navBarBackgroundColor: MAINCOLOR,
+    navBarTextColor: '#fff'
+  }
+};
+
+export { MAINCOLOR, Styles };

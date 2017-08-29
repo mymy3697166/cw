@@ -1,4 +1,12 @@
-import Discovery from './discovery';
-import Category from './category';
+import ComponentAvatar from './ComponentAvatar';
+import ViewDiscovery from './ViewDiscovery';
+import ViewCategory from './ViewCategory';
+import ViewDrawer from './ViewDrawer';
 
-export { Discovery, Category };
+
+export { 
+  ComponentAvatar,
+  ViewDiscovery,
+  ViewCategory,
+  ViewDrawer
+};
