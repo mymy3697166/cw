@@ -1,1 +1,1 @@
-import { Index } from './src/config/routes';
+import {  } from './src/config/routes';

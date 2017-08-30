@@ -24,7 +24,8 @@ Navigation.startTabBasedApp({
     }
   ],
   drawer: {
-    left: {screen: 'Drawer'}
+    left: {screen: 'Drawer'},
+    disableOpenGesture: true
   },
   tabsStyle: {
     tabBarSelectedButtonColor: MAINCOLOR,

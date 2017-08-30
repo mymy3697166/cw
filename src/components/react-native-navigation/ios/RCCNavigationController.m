@@ -314,20 +314,14 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
   }
 }
 
--(void)onButtonPress:(UIBarButtonItem*)barButtonItem
-{
+-(void)onButtonPress:(UIBarButtonItem*)barButtonItem {
   NSString *callbackId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_KEY);
   if (!callbackId) return;
   NSString *buttonId = objc_getAssociatedObject(barButtonItem, &CALLBACK_ASSOCIATED_ID);
-  [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
-   {
-     @"type": @"NavBarButtonPress",
-     @"id": buttonId ? buttonId : [NSNull null]
-   }];
+  [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@{@"type": @"NavBarButtonPress", @"id": buttonId ? buttonId : [NSNull null]}];
 }
 
--(void)setButtons:(NSArray*)buttons viewController:(UIViewController*)viewController side:(NSString*)side animated:(BOOL)animated
-{
+-(void)setButtons:(NSArray*)buttons viewController:(UIViewController*)viewController side:(NSString*)side animated:(BOOL)animated {
   NSMutableArray *barButtonItems = [NSMutableArray new];
   for (NSDictionary *button in buttons)
   {
@@ -394,7 +388,6 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     [viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
   }
 }
-
 
 -(void)processTitleView:(UIViewController*)viewController
                   props:(NSDictionary*)props

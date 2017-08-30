@@ -10,7 +10,7 @@
 - (__nonnull instancetype)initWithComponentName:(NSString *__nonnull)component
                                       passProps:(NSDictionary *__nullable)passProps
                                          bridge:(RCTBridge *__nonnull)bridge
-                                         target:(id __nullable)target
-                                         action:(SEL __nullable)action;
+                                         target:(id __nullable)aTarget
+                                         action:(SEL __nullable)aAction;
 
 @end
