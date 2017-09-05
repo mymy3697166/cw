@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Dimensions, Text, Button } from 'react-native';
 import ViewBase from './ViewBase';
-import { Styles } from '../config/constants'
+import { Styles } from '../config/constants';
+import Swiper from '../components/swiper';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;
@@ -18,6 +19,7 @@ export default class ViewDiscovery extends ViewBase {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.state = {};
   }
 
   onNavigatorEvent(event) {
@@ -27,8 +29,10 @@ export default class ViewDiscovery extends ViewBase {
   }
 
   render() {
+    let { width, height } = Dimensions.get('window');
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
+        
       </View>
     );
   }

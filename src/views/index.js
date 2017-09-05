@@ -2,7 +2,6 @@ import ComponentAvatar from './ComponentAvatar';
 import ViewDiscovery from './ViewDiscovery';
 import ViewCategory from './ViewCategory';
 import ViewDrawer from './ViewDrawer';
-
 import AV from 'leancloud-storage';
 
 const appId = 'JO3OJp373W3VEa7DjyfsCtuL-gzGzoHsz';
