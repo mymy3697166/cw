@@ -31,7 +31,7 @@ export default class ViewCategory extends ViewBase {
     return (
       <FlatList
         showsVerticalScrollIndicator={false}
-        style={{flex: 1}}
+        style={{flex: 1, paddingTop: 8}}
         data={this.state.tags}
         renderItem={this.renderItem.bind(this)}
       />
@@ -42,9 +42,11 @@ export default class ViewCategory extends ViewBase {
     let w = this.fw - 16;
     let h = w * 9 / 16;
     return (
-      <TouchableOpacity style={{width: w, height: h, marginTop: 8, marginLeft: 8}} activeOpacity={0.8}>
+      <TouchableOpacity style={{width: w, height: h, marginBottom: info.index == (this.state.tags.length - 1) ? 16 : 8, marginLeft: 8}} activeOpacity={0.8}>
         <Image style={{width: w, height: h, borderRadius: 5}} source={{uri: info.item.cover}}>
-          <Text style={{marginTop: 16, marginLeft: 16, padding: 8, backgroundColor: '#0005', color: '#fff'}}>{info.item.name}</Text>
+          <View style={{height: 40, width: 40, borderRadius: 20, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center', marginLeft: 8, marginTop: 8}}>
+              <Text style={{fontSize: 14, color: '#fff', backgroundColor: 'transparent'}}>{info.item.name}</Text>
+          </View>
         </Image>
       </TouchableOpacity>
     );
