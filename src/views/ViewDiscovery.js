@@ -1,6 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
-import { Styles, View, Image, Dimensions, Text } from '../';
+import { Styles } from '../config/constants';
+import { View, Image, Dimensions, Text } from '../';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;

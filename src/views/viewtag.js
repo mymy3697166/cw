@@ -1,6 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
-import { Styles, Tag, View, FlatList, Image, Text, TouchableOpacity } from '../';
+import { Styles } from '../config/constants';
+import { Tag, View, FlatList, Image, Text, TouchableOpacity } from '../';
 
 export default class ViewTag extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;

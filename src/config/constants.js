@@ -18,5 +18,15 @@ export const Styles = {
     topBarElevationShadowEnabled: false,
     statusBarColor: MAINCOLOR,
     navBarHeight: 44
+  },
+  noTabBarNavigatorStyle: {
+    navBarNoBorder: true,
+    navBarBackgroundColor: MAINCOLOR,
+    navBarTextColor: '#fff',
+    navBarTitleTextCentered: true,
+    topBarElevationShadowEnabled: false,
+    statusBarColor: MAINCOLOR,
+    navBarHeight: 44,
+    tabBarHidden: true
   }
 };
