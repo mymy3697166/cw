@@ -1,4 +1,4 @@
-const MAINCOLORS = [
+export const MAINCOLORS = [
   '#725c9e', // 紫色，星期日的颜色
   '#f3715c', // 红色，星期一的颜色
   '#f28d00', // 橙色，星期二的颜色
@@ -7,9 +7,9 @@ const MAINCOLORS = [
   '#00ebc0', // 青色，星期五的颜色
   '#1e90ff', // 蓝色，星期六的颜色
 ];
-const MAINCOLOR = MAINCOLORS[new Date().getDay()];
+export const MAINCOLOR = MAINCOLORS[new Date().getDay()];
 
-const Styles = {
+export const Styles = {
   navigatorStyle: {
     navBarNoBorder: true,
     navBarBackgroundColor: MAINCOLOR,
@@ -20,5 +20,3 @@ const Styles = {
     navBarHeight: 44
   }
 };
-
-export { MAINCOLOR, Styles };

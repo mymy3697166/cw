@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, Dimensions } from 'react-native';
+import { MAINCOLOR, AsyncStorage, Dimensions, StyleSheet } from '../';
 
 export default class ViewBase extends Component {
   constructor(props) {
@@ -7,6 +7,8 @@ export default class ViewBase extends Component {
     let { width, height } = Dimensions.get('window');
     this.fw = width;
     this.fh = height;
+    this.mc = MAINCOLOR;
+    this.px = StyleSheet.hairlineWidth;
   }
 
   setCache(key, value) {

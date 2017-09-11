@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, Image, Dimensions, Text, Button } from 'react-native';
-import ViewBase from './ViewBase';
-import { Styles } from '../config/constants';
-import Swiper from '../components/swiper';
+import ViewBase from './viewbase';
+import { Styles, View, Image, Dimensions, Text } from '../';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;

@@ -1,6 +1,6 @@
 import React from 'react';
-import ViewBase from './ViewBase';
-import { View } from 'react-native';
+import ViewBase from './viewbase';
+import { View } from '../';
 
 export default class ViewDrawer extends ViewBase {
   constructor(props) {

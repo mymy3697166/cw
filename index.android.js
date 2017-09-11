@@ -1,1 +1,2 @@
-import {  } from './src/config/routes';
+import init from './src/'
+init();

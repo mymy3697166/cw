@@ -1,6 +1,6 @@
 import React from 'react';
-import ViewBase from './ViewBase';
-import { Image, TouchableOpacity } from 'react-native';
+import ViewBase from './viewbase';
+import { Image, TouchableOpacity } from '../';
 
 export default class ComponentAvatar extends ViewBase {
   constructor(props) {
