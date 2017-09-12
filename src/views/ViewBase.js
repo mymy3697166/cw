@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MAINCOLOR, AsyncStorage, Dimensions, StyleSheet } from '../';
+import { MAINCOLOR, AsyncStorage, Dimensions, StyleSheet, PixelRatio } from '../';
 
 export default class ViewBase extends Component {
   constructor(props) {
@@ -27,5 +27,9 @@ export default class ViewBase extends Component {
         else resolve(JSON.parse(result));
       });
     });
+  }
+
+  getPixel(dp) {
+    return PixelRatio.get() * dp;
   }
 }

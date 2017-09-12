@@ -14,33 +14,33 @@ export default class ViewWallpaperList extends ViewBase {
       wallpapers: [],
       tagIndex: -1
     };
+
+    this.tag = Tag.createWithoutData('Tag', this.props.id);
   }
 
   componentDidMount() {
-    let tag = Tag.createWithoutData('Tag', this.props.id);
-    Tag.query.equalTo('tag', tag).equalTo('status', 0).find().then(e => {
+    Tag.query.equalTo('tag', this.tag).equalTo('status', 0).find().then(e => {
       let ls = e.map(item => {
         return {id: item.id, name: item.get('name'), key: item.id};
       });
       this.setState({tags: ls})
     });
-    WallpaperTags.query.include('wallpaper').equalTo('tag', tag).find().then(e => {
-      let ls = e.map(item => {
-        let wp = item.get('wallpaper');
-        return {key: wp.id, id: wp.id, image: wp.get('image').thumbnailURL(320, 180)};
-      });
-      this.setState({wallpapers: ls});
-    });
+    this.fetchWallpapers();
   }
 
-  onTagPress(index, tagId) {
-    let tag = Tag.createWithoutData('Tag', tagId);
-    WallpaperTags.query.include('wallpaper').equalTo('tag', tag).find().then(e => {
+  onTagPress(index, id) {
+    this.tag = Tag.createWithoutData('Tag', id);
+    this.state.tagIndex = index;
+    this.fetchWallpapers();
+  }
+
+  fetchWallpapers(page) {
+    WallpaperTags.query.include('wallpaper').equalTo('tag', this.tag).descending('createdAt').skip(page * 30).limit(30).find().then(e => {
       let ls = e.map(item => {
         let wp = item.get('wallpaper');
-        return {key: wp.id, id: wp.id, image: wp.get('image').thumbnailURL(320, 180)};
+        return {key: wp.id, id: wp.id, image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
       });
-      this.setState({wallpapers: ls, tagIndex: index});
+      this.setState({wallpapers: ls, tagIndex: this.state.tagIndex});
     });
   }
 
@@ -72,7 +72,7 @@ export default class ViewWallpaperList extends ViewBase {
     let h = w * 16 / 9;
     return (
       <TouchableOpacity activeOpacity={0.8} style={{width: w, height: h, marginTop: 8, marginLeft: 8}}>
-        <Image source={{uri: info.item.image, width: w, height: h, backgroundColor: '#eee'}} />
+        <Image source={{uri: info.item.image, cache: 'force-cache'}} style={{width: w, height: h, backgroundColor: '#eee'}} />
       </TouchableOpacity>
     );
   }

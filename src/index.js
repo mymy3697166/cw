@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio } from 'react-native';
 import AV from 'leancloud-storage';
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles } from './config/constants';
@@ -25,7 +25,7 @@ export default function init() {
 // 导出组件
 export {
   // 系统组件
-  View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView,
+  View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio,
   // 扩展系统组件
   Image, Navigation,
   // 常量
