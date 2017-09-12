@@ -62,15 +62,9 @@ navigationController:(UINavigationController*)navigationController
     return string;
 }
 
--(void)setup:(NSDictionary*)style
-{
-    if (!self.navigationController)
-    {
-        return;
-    }
-    
+-(void)setup:(NSDictionary*)style {
+    if (!self.navigationController) return;
     CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
-    
     self.titleView = [[RCCTitleView alloc] initWithFrame:navigationBarBounds];
     self.titleView.backgroundColor = [UIColor clearColor];
     self.titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -83,19 +77,16 @@ navigationController:(UINavigationController*)navigationController
         return;
     }
     
-    if ([self isTitleImage])
-    {
+    if ([self isTitleImage]) {
         [self setupTitleImage];
         return;
     }
     
-    if (self.subtitle)
-    {
+    if (self.subtitle) {
         self.titleView.subtitleLabel = [self setupSubtitle:style];
     }
     
-    if (self.title)
-    {
+    if (self.title) {
         self.titleView.titleLabel = [self setupTitle:style];
     }
     

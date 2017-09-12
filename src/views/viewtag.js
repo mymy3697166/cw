@@ -68,7 +68,7 @@ export default class ViewTag extends ViewBase {
     let w = this.fw - 16;
     let h = w * 9 / 16;
     return (
-      <TouchableOpacity onPress={() => this.props.navigator.push({screen: 'WallpaperList', title: info.item.name, passProps: {id: info.item.id}})} style={{width: w, height: h, marginBottom: info.index == (this.state.tags.length - 1) ? 16 : 8, marginLeft: 8}} activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => this.props.navigator.push({screen: 'WallpaperList', title: info.item.name, passProps: {id: info.item.id}, backButtonTitle: ''})} style={{width: w, height: h, marginBottom: info.index == (this.state.tags.length - 1) ? 16 : 8, marginLeft: 8}} activeOpacity={0.8}>
         <Image style={{width: w, height: h, borderRadius: 5, flexDirection: 'row'}} source={{uri: info.item.cover, cache: 'force-cache'}}>
           <View style={{height: 40, width: 40, borderRadius: 20, backgroundColor: this.mc, justifyContent: 'center', alignItems: 'center', marginLeft: 8, marginTop: 8, zIndex: 2}}>
             <Text style={{fontSize: 14, color: '#fff', backgroundColor: 'transparent'}}>{info.item.name}</Text>

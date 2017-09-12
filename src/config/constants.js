@@ -15,6 +15,7 @@ export const Styles = {
     navBarBackgroundColor: MAINCOLOR,
     navBarTextColor: '#fff',
     navBarTitleTextCentered: true,
+    navBarButtonColor: '#fff',
     topBarElevationShadowEnabled: false,
     statusBarColor: MAINCOLOR,
     navBarHeight: 44
@@ -24,6 +25,7 @@ export const Styles = {
     navBarBackgroundColor: MAINCOLOR,
     navBarTextColor: '#fff',
     navBarTitleTextCentered: true,
+    navBarButtonColor: '#fff',
     topBarElevationShadowEnabled: false,
     statusBarColor: MAINCOLOR,
     navBarHeight: 44,

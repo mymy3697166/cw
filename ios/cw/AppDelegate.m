@@ -13,8 +13,10 @@
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  UIImage *backIcon = [UIImage imageNamed:@"icon_back"];
+  [[UINavigationBar appearance] setBackIndicatorImage:backIcon];
+  [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backIcon];
   NSURL *jsCodeLocation;
 #ifdef DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
@@ -26,5 +28,4 @@
   [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation launchOptions:launchOptions];
   return YES;
 }
-
 @end
