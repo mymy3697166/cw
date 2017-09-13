@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder } from 'react-native';
 import AV from 'leancloud-storage';
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles } from './config/constants';
 import { registerRoutes } from './config/routes';
-import { Tag, Wallpaper, User, WallpaperTags } from './config/models';
+import { Tag, Wallpaper, User, WallpaperTags, Theme } from './config/models';
 import ComponentAvatar from './views/componentavatar';
 import ViewDiscovery from './views/viewdiscovery';
 import ViewTag from './views/viewtag';
@@ -25,13 +25,13 @@ export default function init() {
 // 导出组件
 export {
   // 系统组件
-  View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio,
+  View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder,
   // 扩展系统组件
   Image, Navigation,
   // 常量
   MAINCOLOR, Styles,
   // 数据模型
-  Tag, Wallpaper, WallpaperTags, User,
+  Tag, Wallpaper, WallpaperTags, User, Theme,
   // 自定义组件
   ComponentAvatar,
   // 页面
