@@ -1,8 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { View, ScrollView, Image, Text, TouchableOpacity, PanResponder, Theme, FlatList, User } from '../';
-import AV from 'leancloud-storage';
+import { View, ScrollView, Image, Text, TouchableOpacity, PanResponder, Theme, FlatList, User, Wallpaper } from '../';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;
@@ -34,12 +33,29 @@ export default class ViewDiscovery extends ViewBase {
       });
       this.setState({themes: ls});
     });
-    User.query.find().then(e => {
-      alert(JSON.stringify(e));
-      let ls = e.map(item => {
-        return {id: item.id, name: item.get('nickname'), avatar: item.get('avatar').url(), description: item.get('description')};
+    User.query.equalTo('status', 0).equalTo('type', 99).find().then(users => {
+      let ls = [];
+      users.forEach(item => {
+        let user = {id: item.id, name: item.get('nickname'), avatar: item.get('avatar').url(), description: item.get('description')};
+        ls.push(user);
+        Wallpaper.query.equalTo('status', 0).equalTo('user', item).descending('createdAt').limit(4).find().then(wps => {
+          user.wallpapers = wps.map(wp => {
+            return {id: wp.id, image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+          });
+          if (!this.user_count) this.user_count = 1;
+          else this.user_count++;
+          if (this.user_count == users.length) {
+            this.setState({users: ls});
+            delete this.user_count;
+          }
+        });
       });
-      this.setState({users: ls});
+    });
+    Wallpaper.query.equalTo('status', 0).descending('createdAt').limit(30).find().then(e => {
+      let ls = e.map(item => {
+        return {key: item.id, id: item.id, image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+      });
+      this.setState({wallpapers: ls});
     });
   }
 
@@ -83,7 +99,7 @@ export default class ViewDiscovery extends ViewBase {
             showsHorizontalScrollIndicator={false}
             onScroll={this.onThemeScroll.bind(this)}
           >
-            {this.state.themes.map((item, index) => <TouchableOpacity activeOpacity={0.8} key={index} style={{width: this.fw, height: h + 16, justifyContent: 'center', alignItems: 'center'}}>
+            {this.state.themes.map(item => <TouchableOpacity activeOpacity={0.8} key={item.id} style={{width: this.fw, height: h + 16, justifyContent: 'center', alignItems: 'center'}}>
               <Image source={{uri: item.cover, cache: 'force-cache'}} style={{width: w, height: h, borderRadius: 5, backgroundColor: '#eee'}}>
                 <Image source={require('../assets/bg_mask.png')} style={{width: w, height: 44, position: 'absolute', bottom: 0, left: 0}}>
                   <Text style={{backgroundColor: 'transparent', color: '#fff', lineHeight: 44, paddingLeft: 16}}>{item.name}</Text>
@@ -98,20 +114,32 @@ export default class ViewDiscovery extends ViewBase {
             return (<View key={index} style={{right: right, opacity: opacity, width: 8, height: 8, borderRadius: 4, position: 'absolute', bottom: 22, backgroundColor: '#fff'}}></View>);
           })}
         </View>
-        <Text style={{paddingLeft: 8, paddingTop: 16, paddingBottom: 16, fontSize: 15, color: '#999', fontWeight: 'bold'}}>设计师作品</Text>
-        {this.state.users.map((item, index) => <View style={{width: this.fw}}>
-          <TouchableOpacity>
-            <Image source={{uri: item.avatar, cache: 'force-cache'}} style={{width: 36, height: 36, borderRadius: 18, padding: 8}} />
+        <View style={{height: 50, paddingLeft: 8, paddingRight: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Text style={{fontSize: 15, color: '#666', fontWeight: 'bold'}}>设计师作品</Text>
+          <TouchableOpacity style={{paddingLeft: 16, paddingTop: 16, paddingBottom: 16}}>
+            <Image source={require('../assets/icon_more.png')} />
           </TouchableOpacity>
+        </View>
+        {this.state.users.map(item => <View key={item.id} style={{width: this.fw, flexDirection: 'row', flexWrap: 'wrap'}}>
+          <TouchableOpacity activeOpacity={0.8} style={{width: this.fw, height: 57, flexDirection: 'row', flexWrap: 'wrap'}}>
+            <Image source={{uri: item.avatar, cache: 'force-cache'}} style={{width: 36, height: 36, borderRadius: 18, marginLeft: 8}} />
+            <Text style={{width: this.fw - 92, paddingLeft: 6, fontSize: 16, color: '#666', lineHeight: 36}}>{item.name}</Text>
+            <Text style={{marginLeft: 16, marginTop: 8, fontSize: 13, color: '#aaa'}}>{item.description}</Text>
+          </TouchableOpacity>
+          {item.wallpapers.map((item, index) => <TouchableOpacity key={item.id} activeOpacity={0.8} style={{width: (this.fw - 22) / 4, height: (this.fw - 22) / 4 * 16 / 9, marginTop: 16, marginLeft: index == 0 ? 8 : 2}}>
+            <Image source={{uri: item.image, cache: 'force-cache'}} style={{width: (this.fw - 22) / 4, height: (this.fw - 22) / 4 * 16 / 9}} />
+          </TouchableOpacity>)}
+          <View style={{height: 8, marginTop: 16, backgroundColor: '#f1f1f1', width: this.fw}}></View>
         </View>)}
+        <Text style={{height: 50, fontSize: 15, color: '#666', fontWeight: 'bold', lineHeight: 50, paddingLeft: 8}}>最新发布</Text>
       </View>
     );
   }
 
   renderItem(info) {
     return (
-      <TouchableOpacity>
-        
+      <TouchableOpacity activeOpacity={0.8} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, marginTop: 8, marginLeft: 8}}>
+        <Image source={{uri: info.item.image}} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9}} />
       </TouchableOpacity>
     );
   }
