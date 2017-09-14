@@ -23,39 +23,57 @@ export default class ViewDiscovery extends ViewBase {
       themes: [],
       themeIndex: 0,
       users: [],
-      wallpapers: []
+      wallpapers: [],
+      refreshing: false
     };
+    this.page = 0;
   }
   componentDidMount() {
-    Theme.query.equalTo('status', 0).descending('createdAt').limit(5).find().then(e => {
-      let ls = e.map(item => {
-        return {id: item.id, name: item.get('name'), cover: item.get('cover').url()};
+    this.fetchData(true);
+  }
+
+  fetchData(refresh) {
+    if (refresh) {
+      this.setState({refreshing: true})
+      Theme.query.equalTo('status', 0).descending('createdAt').limit(5).find().then(e => {
+        let ls = e.map(item => {
+          return {id: item.id, name: item.get('name'), cover: item.get('cover').url()};
+        });
+        this.setState({themes: ls});
       });
-      this.setState({themes: ls});
-    });
-    User.query.equalTo('status', 0).equalTo('type', 99).find().then(users => {
-      let ls = [];
-      users.forEach(item => {
-        let user = {id: item.id, name: item.get('nickname'), avatar: item.get('avatar').url(), description: item.get('description')};
-        ls.push(user);
-        Wallpaper.query.equalTo('status', 0).equalTo('user', item).descending('createdAt').limit(4).find().then(wps => {
-          user.wallpapers = wps.map(wp => {
-            return {id: wp.id, image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+      User.query.equalTo('status', 0).equalTo('type', 99).find().then(users => {
+        let ls = [];
+        users.forEach(item => {
+          let user = {id: item.id, name: item.get('nickname'), avatar: item.get('avatar').url(), description: item.get('description')};
+          ls.push(user);
+          Wallpaper.query.equalTo('status', 0).equalTo('user', item).descending('createdAt').limit(4).find().then(wps => {
+            user.wallpapers = wps.map(wp => {
+              return {id: wp.id, name: wp.get('name'), image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+            });
+            if (!this.user_count) this.user_count = 1;
+            else this.user_count++;
+            if (this.user_count == users.length) {
+              this.setState({users: ls, refreshing: false});
+              delete this.user_count;
+            }
           });
-          if (!this.user_count) this.user_count = 1;
-          else this.user_count++;
-          if (this.user_count == users.length) {
-            this.setState({users: ls});
-            delete this.user_count;
-          }
         });
       });
-    });
-    Wallpaper.query.equalTo('status', 0).descending('createdAt').limit(30).find().then(e => {
+      this.page = 0;
+    }
+    Wallpaper.query.equalTo('status', 0).descending('createdAt').skip(this.page * 30).limit(30).find().then(e => {
+      this.page++;
       let ls = e.map(item => {
-        return {key: item.id, id: item.id, image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+        return {key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
       });
-      this.setState({wallpapers: ls});
+      this.setState({wallpapers: refresh ? ls : this.state.wallpapers.concat(ls)});
+    });
+  }
+
+  openPreview(wp) {
+    this.props.navigator.push({
+      screen: 'Wallpaper',
+      passProps: wp
     });
   }
 
@@ -77,10 +95,15 @@ export default class ViewDiscovery extends ViewBase {
       <FlatList
         style={{flex: 1, backgroundColor: '#fff'}}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={this.renderHeader()}
         numColumns={3}
         data={this.state.wallpapers}
+        refreshing={this.state.refreshing}
+        ListHeaderComponent={this.renderHeader()}
         renderItem={this.renderItem.bind(this)}
+        ListFooterComponent={<Text style={{width: this.fw, paddingTop: 32, paddingBottom: 32, fontSize: 13, color: '#999', textAlign: 'center'}}>{this.state.wallpapers.length % 30 > 0 ? '没有更多了' : '正在加载...'}</Text>}
+        onRefresh={() => this.fetchData(true)}
+        onEndReached={() => this.fetchData()}
+        onEndReachedThreshold={0.1}
       />
     );
   }
@@ -122,12 +145,12 @@ export default class ViewDiscovery extends ViewBase {
         </View>
         {this.state.users.map(item => <View key={item.id} style={{width: this.fw, flexDirection: 'row', flexWrap: 'wrap'}}>
           <TouchableOpacity activeOpacity={0.8} style={{width: this.fw, height: 57, flexDirection: 'row', flexWrap: 'wrap'}}>
-            <Image source={{uri: item.avatar, cache: 'force-cache'}} style={{width: 36, height: 36, borderRadius: 18, marginLeft: 8}} />
+            <Image source={{uri: item.avatar, cache: 'force-cache'}} style={{width: 36, height: 36, borderRadius: 18, marginLeft: 8, backgroundColor: '#eee'}} />
             <Text style={{width: this.fw - 92, paddingLeft: 6, fontSize: 16, color: '#666', lineHeight: 36}}>{item.name}</Text>
-            <Text style={{marginLeft: 16, marginTop: 8, fontSize: 13, color: '#aaa'}}>{item.description}</Text>
+            <Text style={{marginLeft: 8, marginTop: 8, fontSize: 13, color: '#aaa'}}>{item.description}</Text>
           </TouchableOpacity>
-          {item.wallpapers.map((item, index) => <TouchableOpacity key={item.id} activeOpacity={0.8} style={{width: (this.fw - 22) / 4, height: (this.fw - 22) / 4 * 16 / 9, marginTop: 16, marginLeft: index == 0 ? 8 : 2}}>
-            <Image source={{uri: item.image, cache: 'force-cache'}} style={{width: (this.fw - 22) / 4, height: (this.fw - 22) / 4 * 16 / 9}} />
+          {item.wallpapers.map((item, index) => <TouchableOpacity onPress={() => this.openPreview(item)} key={item.id} activeOpacity={0.8} style={{width: (this.fw - 22) / 4, height: (this.fw - 22) / 4 * 16 / 9, marginTop: 16, marginLeft: index == 0 ? 8 : 2}}>
+            <Image source={{uri: item.image, cache: 'force-cache'}} style={{width: (this.fw - 22) / 4, height: (this.fw - 22) / 4 * 16 / 9, backgroundColor: '#eee'}} />
           </TouchableOpacity>)}
           <View style={{height: 8, marginTop: 16, backgroundColor: '#f1f1f1', width: this.fw}}></View>
         </View>)}
@@ -138,8 +161,8 @@ export default class ViewDiscovery extends ViewBase {
 
   renderItem(info) {
     return (
-      <TouchableOpacity activeOpacity={0.8} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, marginTop: 8, marginLeft: 8}}>
-        <Image source={{uri: info.item.image}} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9}} />
+      <TouchableOpacity onPress={() => this.openPreview(item)} activeOpacity={0.8} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, marginTop: 8, marginLeft: 8}}>
+        <Image source={{uri: info.item.image}} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, backgroundColor: '#eee'}} />
       </TouchableOpacity>
     );
   }

@@ -30,5 +30,10 @@ export const Styles = {
     statusBarColor: MAINCOLOR,
     navBarHeight: 44,
     tabBarHidden: true
+  },
+  noNavigatorStyle: {
+    tabBarHidden: true,
+    navBarHidden: true,
+    statusBarHideWithNavBar: true
   }
 };

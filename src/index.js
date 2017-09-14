@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation } from 'react-native';
 import AV from 'leancloud-storage';
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles } from './config/constants';
@@ -10,6 +10,7 @@ import ViewDiscovery from './views/viewdiscovery';
 import ViewTag from './views/viewtag';
 import ViewDrawer from './views/viewdrawer';
 import ViewWallpaperList from './views/viewwallpaperlist';
+import ViewWallpaper from './views/viewwallpaper';
 // 扩展系统组件
 const Image = Platform.OS == 'ios' ? require('Image') : class CacheImage extends Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export default function init() {
 // 导出组件
 export {
   // 系统组件
-  View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder,
+  View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation,
   // 扩展系统组件
   Image, Navigation,
   // 常量
@@ -35,5 +36,5 @@ export {
   // 自定义组件
   ComponentAvatar,
   // 页面
-  ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList
+  ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList, ViewWallpaper
 };
