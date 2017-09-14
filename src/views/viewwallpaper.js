@@ -10,21 +10,29 @@ export default class ViewWallpaper extends ViewBase {
   
     this.state = {
       image: {uri: this.props.image, cache: 'force-cache'},
-      navBarTop: 0,
+      barTop: 0,
+      barBottom: 0,
+      diyBottom: 52
     };
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      if (this.state.navBarTop < 0) return;
+    this.sto = setTimeout(() => {
+      if (this.state.barTop < 0) return;
       this.onBgPress();
     }, 3000);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.sto);
   }
 
   onBgPress() {
     LayoutAnimation.easeInEaseOut();
     this.setState({
-      navBarTop: this.state.navBarTop == 0 ? -64 : 0
+      barTop: this.state.barTop == 0 ? -64 : 0,
+      barBottom: this.state.barBottom == 0 ? -64 : 0,
+      diyBottom: this.state.diyBottom == 52 ? 8 : 52
     });
   }
 
@@ -34,7 +42,7 @@ export default class ViewWallpaper extends ViewBase {
         <TouchableOpacity onPress={this.onBgPress.bind(this)} activeOpacity={1} style={{flex: 1}}>
           <Image source={this.state.image} style={{flex: 1, backgroundColor: '#eee'}} />
         </TouchableOpacity>
-        <View style={{position: 'absolute', top: this.state.navBarTop, left: 0, height: 64, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row', paddingTop: 20, justifyContent: 'space-between'}}>
+        <View style={{position: 'absolute', top: this.state.barTop, left: 0, height: 64, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row', paddingTop: 20, justifyContent: 'space-between'}}>
           <TouchableOpacity onPress={() => this.props.navigator.pop()} style={{width: 42, height: 40, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../assets/icon_back.png')} style={{tintColor: '#fff'}} />
           </TouchableOpacity>
@@ -43,8 +51,25 @@ export default class ViewWallpaper extends ViewBase {
             <Image source={require('../assets/icon_share.png')} style={{tintColor: '#fff'}} />
           </TouchableOpacity>
         </View>
-        <View style={{position: 'absolute', top: this.state.navBarTop, left: 0, height: 64, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row', paddingTop: 20, justifyContent: 'space-between'}}>
+        <View style={{position: 'absolute', bottom: this.state.barBottom, left: 0, height: 44, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row'}}>
+          <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+            <Image source={require('../assets/icon_favorite.png')} style={{tintColor: '#fff'}} />
+            <Text style={{color: '#fff'}}>  收藏</Text>
+          </TouchableOpacity>
+          <View style={{backgroundColor: '#fff', width: this.px, height: 44}}></View>
+          <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+            <Image source={require('../assets/icon_download.png')} style={{tintColor: '#fff'}} />
+            <Text style={{color: '#fff'}}>  下载</Text>
+          </TouchableOpacity>
+          <View style={{backgroundColor: '#fff', width: this.px, height: 44}}></View>
+          <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+            <Image source={require('../assets/icon_comment.png')} style={{tintColor: '#fff'}} />
+            <Text style={{color: '#fff'}}>  评论</Text>
+          </TouchableOpacity>
         </View>
+        <TouchableOpacity activeOpacity={0.8} style={{width: 40, height: 40, borderRadius: 20, backgroundColor: MAINCOLOR, position: 'absolute', right: 8, bottom: this.state.diyBottom, justifyContent: 'center', alignItems: 'center'}}>
+          <Image source={require('../assets/icon_diy.png')} style={{tintColor: '#fff'}} />
+        </TouchableOpacity>
       </View>
     );
   }

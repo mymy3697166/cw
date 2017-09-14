@@ -161,7 +161,7 @@ export default class ViewDiscovery extends ViewBase {
 
   renderItem(info) {
     return (
-      <TouchableOpacity onPress={() => this.openPreview(item)} activeOpacity={0.8} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, marginTop: 8, marginLeft: 8}}>
+      <TouchableOpacity onPress={() => this.openPreview(info.item)} activeOpacity={0.8} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, marginTop: 8, marginLeft: 8}}>
         <Image source={{uri: info.item.image}} style={{width: (this.fw - 32) / 3, height: (this.fw - 32) / 3 * 16 / 9, backgroundColor: '#eee'}} />
       </TouchableOpacity>
     );
