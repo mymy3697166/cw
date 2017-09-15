@@ -48,7 +48,7 @@ export default class ViewDiscovery extends ViewBase {
           ls.push(user);
           Wallpaper.query.equalTo('status', 0).equalTo('user', item).descending('createdAt').limit(4).find().then(wps => {
             user.wallpapers = wps.map(wp => {
-              return {id: wp.id, name: wp.get('name'), image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+              return {id: wp.id, name: wp.get('name'), image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: wp.get('image').url()};
             });
             if (!this.user_count) this.user_count = 1;
             else this.user_count++;
@@ -64,7 +64,7 @@ export default class ViewDiscovery extends ViewBase {
     Wallpaper.query.equalTo('status', 0).descending('createdAt').skip(this.page * 30).limit(30).find().then(e => {
       this.page++;
       let ls = e.map(item => {
-        return {key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90))};
+        return {key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: item.get('image').url()};
       });
       this.setState({wallpapers: refresh ? ls : this.state.wallpapers.concat(ls)});
     });
