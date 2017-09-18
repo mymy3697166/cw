@@ -8,6 +8,6 @@
 
 #import "React/RCTViewManager.h"
 
-@interface CWDownloadViewManager : RCTViewManager
+@interface CWLoader : RCTViewManager
 
 @end

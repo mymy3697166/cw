@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { View, ScrollView, Image, Text, TouchableOpacity, PanResponder, Theme, FlatList, User, Wallpaper } from '../';
+import { View, ScrollView, Image, Text, TouchableOpacity, Theme, FlatList, User, Wallpaper } from '../';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;
@@ -61,13 +61,14 @@ export default class ViewDiscovery extends ViewBase {
       });
       this.page = 0;
     }
+    if (this.state.wallpapers.length % 30 > 0 && this.page > 0) return;
     Wallpaper.query.equalTo('status', 0).descending('createdAt').skip(this.page * 30).limit(30).find().then(e => {
-      this.page++;
       let ls = e.map(item => {
         return {key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: item.get('image').url()};
       });
       this.setState({wallpapers: refresh ? ls : this.state.wallpapers.concat(ls)});
     });
+    this.page++;
   }
 
   openPreview(wp) {
@@ -103,7 +104,8 @@ export default class ViewDiscovery extends ViewBase {
         ListFooterComponent={<Text style={{width: this.fw, paddingTop: 32, paddingBottom: 32, fontSize: 13, color: '#999', textAlign: 'center'}}>{this.state.wallpapers.length % 30 > 0 ? '没有更多了' : '正在加载...'}</Text>}
         onRefresh={() => this.fetchData(true)}
         onEndReached={() => this.fetchData()}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.1 / this.page}
+        scrollEventThrottle={0}
       />
     );
   }

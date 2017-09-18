@@ -15,7 +15,7 @@ export default class ComponentAvatar extends ViewBase {
     
     return (
       <TouchableOpacity style={{width: data.width, height: data.height}}>
-        <Image style={{width: data.width, height: data.height, borderRadius: data.width / 2, borderWidth: 2, borderColor: '#fff', marginLeft: -8}} source={{uri: data.avatar}}></Image>
+        <Image style={{width: data.width, height: data.height, borderRadius: data.width / 2, borderWidth: 2, borderColor: '#fff', marginLeft: -8}} source={{uri: data.avatar}} />
       </TouchableOpacity>
     );
   }

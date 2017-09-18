@@ -5,6 +5,7 @@ import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles } from './config/constants';
 import { registerRoutes } from './config/routes';
 import { Tag, Wallpaper, User, WallpaperTags, Theme } from './config/models';
+import Loader from './components/loader';
 import ComponentAvatar from './views/componentavatar';
 import ViewDiscovery from './views/viewdiscovery';
 import ViewTag from './views/viewtag';
@@ -18,6 +19,12 @@ const Image = Platform.OS == 'ios' ? require('Image') : class CacheImage extends
     this.state = {};
   }
 };
+const ImageBackground = Platform.OS == 'ios' ? require('ImageBackground') : class CacheImageBackground extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+}
 // APP初始化
 export default function init() {
   registerRoutes();
@@ -28,13 +35,13 @@ export {
   // 系统组件
   View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent,
   // 扩展系统组件
-  Image, Navigation,
+  Image, Navigation, ImageBackground,
   // 常量
   MAINCOLOR, Styles,
   // 数据模型
   Tag, Wallpaper, WallpaperTags, User, Theme,
   // 自定义组件
-  ComponentAvatar,
+  ComponentAvatar, Loader,
   // 页面
   ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList, ViewWallpaper
 };
