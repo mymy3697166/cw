@@ -26,6 +26,7 @@ export default class ViewWallpaper extends ViewBase {
   }
 
   componentWillUnmount() {
+
     clearTimeout(this.sto);
   }
 
@@ -39,8 +40,16 @@ export default class ViewWallpaper extends ViewBase {
   }
 
   onLoadFinish(e) {
-
+    this.loaded = true;
     this.setState({image: {uri: e.nativeEvent.uri}});
+  }
+
+  onDownloadPress() {
+    if (this.loaded) {
+      this.warn('测试测试');
+    } else {
+      this.warn('图片加载中，请稍候重试');
+    }
   }
 
   render() {
@@ -64,7 +73,7 @@ export default class ViewWallpaper extends ViewBase {
             <Text style={{color: '#fff'}}>  收藏</Text>
           </TouchableOpacity>
           <View style={{backgroundColor: '#fff', width: this.px, height: 44}}></View>
-          <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+          <TouchableOpacity onPress={this.onDownloadPress.bind(this)} style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
             <Image source={require('../assets/icon_download.png')} style={{tintColor: '#fff'}} />
             <Text style={{color: '#fff'}}>  下载</Text>
           </TouchableOpacity>

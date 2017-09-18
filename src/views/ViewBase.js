@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MAINCOLOR, AsyncStorage, Dimensions, StyleSheet, PixelRatio } from '../';
+import { MAINCOLOR, AsyncStorage, Dimensions, StyleSheet, PixelRatio, Toast } from '../';
 
 export default class ViewBase extends Component {
   constructor(props) {
@@ -31,5 +31,13 @@ export default class ViewBase extends Component {
 
   getPixel(dp) {
     return PixelRatio.get() * dp;
+  }
+
+  success(msg) {
+    Toast.success(msg);
+  }
+
+  warn(msg) {
+    Toast.warn(msg);
   }
 }

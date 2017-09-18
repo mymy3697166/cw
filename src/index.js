@@ -6,6 +6,7 @@ import { MAINCOLOR, Styles } from './config/constants';
 import { registerRoutes } from './config/routes';
 import { Tag, Wallpaper, User, WallpaperTags, Theme } from './config/models';
 import Loader from './components/loader';
+import Toast from './components/toast';
 import ComponentAvatar from './views/componentavatar';
 import ViewDiscovery from './views/viewdiscovery';
 import ViewTag from './views/viewtag';
@@ -41,7 +42,7 @@ export {
   // 数据模型
   Tag, Wallpaper, WallpaperTags, User, Theme,
   // 自定义组件
-  ComponentAvatar, Loader,
+  ComponentAvatar, Loader, Toast,
   // 页面
   ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList, ViewWallpaper
 };
