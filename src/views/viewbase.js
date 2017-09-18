@@ -32,7 +32,7 @@ export default class ViewBase extends Component {
   getPixel(dp) {
     return PixelRatio.get() * dp;
   }
-
+  
   success(msg) {
     Toast.success(msg);
   }
