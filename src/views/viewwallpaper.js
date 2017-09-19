@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { MAINCOLOR, View, Image, Text, TouchableOpacity, LayoutAnimation, Loader } from '../';
+import { MAINCOLOR, View, Image, Text, TouchableOpacity, LayoutAnimation, Loader, CameraRoll, DownloadLog } from '../';
 
 export default class ViewWallpaper extends ViewBase {
   static navigatorStyle = Styles.noNavigatorStyle;
@@ -12,8 +12,7 @@ export default class ViewWallpaper extends ViewBase {
       image: {uri: this.props.image, cache: 'force-cache'},
       barTop: 0,
       barBottom: 0,
-      diyBottom: 52,
-      progress: 0
+      diyBottom: 52
     };
   }
 
@@ -46,7 +45,17 @@ export default class ViewWallpaper extends ViewBase {
 
   onDownloadPress() {
     if (this.loaded) {
-      this.warn('测试测试');
+      CameraRoll.saveImageWithTag(this.state.image.uri).then(e => {
+        this.success('保存成功');
+        let wp = this.props.wallpaper;
+        let log = new DownloadLog();
+        log.set('status', 0);
+        log.set('user', this.user);
+        log.set('wallpaper', wp);
+        log.save();
+        wp.set('download_count', wp.get('download_count') + 1);
+        wp.save();
+      });
     } else {
       this.warn('图片加载中，请稍候重试');
     }

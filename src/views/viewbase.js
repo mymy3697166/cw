@@ -40,4 +40,12 @@ export default class ViewBase extends Component {
   warn(msg) {
     Toast.warn(msg);
   }
+
+  showLoading() {
+    Toast.showLoading();
+  }
+
+  hideLoading() {
+    Toast.hideLoading();
+  }
 }
