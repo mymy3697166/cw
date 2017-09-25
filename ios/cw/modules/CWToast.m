@@ -11,16 +11,21 @@
 #import <React/RCTConvert.h>
 
 static UIView *toastView;
+static UIView *loadingView;
 
 @implementation CWToast {
   UIImageView *iconImage;
   UILabel *msgLabel;
+  
+  UIView *loadingBgView;
+  UIActivityIndicatorView *indicator;
 }
 
 - (instancetype)init {
   self = [super init];
+  CGFloat width = [UIScreen mainScreen].bounds.size.width;
+  CGFloat height = [UIScreen mainScreen].bounds.size.height;
   if (!toastView) {
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
     toastView = [[UIView alloc] initWithFrame:CGRectMake(0, -80, width, 80)];
     toastView.backgroundColor = UIColor.whiteColor;
     
@@ -32,6 +37,17 @@ static UIView *toastView;
     
     [toastView addSubview:iconImage];
     [toastView addSubview:msgLabel];
+  }
+  if (!loadingView) {
+    CGFloat lvw = 64, lvh = 64;
+    loadingView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    loadingBgView = [[UIView alloc] initWithFrame:CGRectMake((width - lvw) / 2, (height - lvh) / 2, lvw, lvh)];
+    loadingBgView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
+    loadingBgView.layer.cornerRadius = 10;
+    indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    indicator.frame = CGRectMake((lvw - 37) / 2, (lvh - 37) / 2, 37, 37);
+    [loadingBgView addSubview:indicator];
+    [loadingView addSubview:loadingBgView];
   }
   return self;
 }
@@ -53,12 +69,25 @@ RCT_EXPORT_METHOD(show:(NSString *)msg icon:(id)icon) {
   });
 }
 
+RCT_EXPORT_METHOD(showLoading) {
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    [indicator startAnimating];
+    [[UIApplication sharedApplication].keyWindow addSubview:loadingView];
+  });
+}
+
+RCT_EXPORT_METHOD(hideLoading) {
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    [indicator stopAnimating];
+    [loadingView removeFromSuperview];
+  });
+}
+
 - (void)hide {
   [UIView animateWithDuration:0.4 animations:^{
     toastView.frame = CGRectMake(0, -80, toastView.frame.size.width, 80);
   } completion:^(BOOL finished) {
-    [toastView removeFromSuperview];
-    
+    if (finished) [toastView removeFromSuperview];
   }];
 }
 

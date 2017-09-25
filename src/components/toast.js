@@ -19,10 +19,10 @@ export default class Toast {
   }
 
   static showLoading() {
-
+    NativeModules.CWToast.showLoading();
   }
 
   static hideLoading() {
-
+    NativeModules.CWToast.hideLoading();
   }
 }

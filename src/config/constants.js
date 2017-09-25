@@ -1,3 +1,8 @@
+const baseURL = 'http://localhost:3000/';
+export const URLs = {
+  FETCH_HOME: `${baseURL}api/api/fetch_home`,
+}
+
 export const MAINCOLORS = [
   '#725c9e', // 紫色，星期日的颜色
   '#f3715c', // 红色，星期一的颜色
