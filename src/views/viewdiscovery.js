@@ -35,40 +35,19 @@ export default class ViewDiscovery extends ViewBase {
   fetchData(refresh) {
     if (refresh) {
       this.setState({refreshing: true})
-      Theme.query.equalTo('status', 0).descending('createdAt').limit(5).find().then(e => {
-        let ls = e.map(item => {
-          return {id: item.id, name: item.get('name'), cover: item.get('cover').url()};
-        });
-        this.setState({themes: ls});
+      this.post(this.urls.FETCH_HOME).then(e => {
+        alert(e);
       });
-      User.query.equalTo('status', 0).equalTo('type', 99).find().then(users => {
-        let ls = [];
-        users.forEach(item => {
-          let user = {id: item.id, name: item.get('nickname'), avatar: item.get('avatar').url(), description: item.get('description')};
-          ls.push(user);
-          Wallpaper.query.equalTo('status', 0).equalTo('user', item).descending('createdAt').limit(4).find().then(wps => {
-            user.wallpapers = wps.map(wp => {
-              return {wallpaper: item, id: wp.id, name: wp.get('name'), image: wp.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: wp.get('image').url()};
-            });
-            if (!this.user_count) this.user_count = 1;
-            else this.user_count++;
-            if (this.user_count == users.length) {
-              this.setState({users: ls, refreshing: false});
-              delete this.user_count;
-            }
-          });
-        });
-      });
-      this.page = 0;
+      // this.page = 0;
     }
-    if (this.state.wallpapers.length % 30 > 0 && this.page > 0) return;
-    Wallpaper.query.equalTo('status', 0).descending('createdAt').skip(this.page * 30).limit(30).find().then(e => {
-      let ls = e.map(item => {
-        return {wallpaper: item, key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: item.get('image').url()};
-      });
-      this.setState({wallpapers: refresh ? ls : this.state.wallpapers.concat(ls)});
-    });
-    this.page++;
+    // if (this.state.wallpapers.length % 30 > 0 && this.page > 0) return;
+    // Wallpaper.query.equalTo('status', 0).descending('createdAt').skip(this.page * 30).limit(30).find().then(e => {
+    //   let ls = e.map(item => {
+    //     return {wallpaper: item, key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: item.get('image').url()};
+    //   });
+    //   this.setState({wallpapers: refresh ? ls : this.state.wallpapers.concat(ls)});
+    // });
+    // this.page++;
   }
 
   openPreview(wp) {
