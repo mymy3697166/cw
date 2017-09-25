@@ -9,7 +9,7 @@ export default class ViewWallpaper extends ViewBase {
     super(props);
   
     this.state = {
-      image: {uri: this.props.image, cache: 'force-cache'},
+      image: {uri: this.props.data.image, cache: 'force-cache'},
       barTop: 0,
       barBottom: 0,
       diyBottom: 52
@@ -21,7 +21,7 @@ export default class ViewWallpaper extends ViewBase {
       if (this.state.barTop < 0) return;
       this.onBgPress();
     }, 3000);
-    this.loader.download(this.props.uri);
+    this.loader.download(this.props.data.image_original);
   }
 
   componentWillUnmount() {
@@ -48,13 +48,13 @@ export default class ViewWallpaper extends ViewBase {
       CameraRoll.saveImageWithTag(this.state.image.uri).then(e => {
         this.success('保存成功');
         let wp = this.props.wallpaper;
-        let log = new DownloadLog();
-        log.set('status', 0);
-        log.set('user', this.user);
-        log.set('wallpaper', wp);
-        log.save();
-        wp.set('download_count', wp.get('download_count') + 1);
-        wp.save();
+        // let log = new DownloadLog();
+        // log.set('status', 0);
+        // log.set('user', this.user);
+        // log.set('wallpaper', wp);
+        // log.save();
+        // wp.set('download_count', wp.get('download_count') + 1);
+        // wp.save();
       });
     } else {
       this.warn('图片加载中，请稍候重试');

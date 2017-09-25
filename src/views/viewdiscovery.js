@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { View, ScrollView, Image, Text, TouchableOpacity, Theme, FlatList, User, Wallpaper } from '../';
+import { View, ScrollView, Image, Text, TouchableOpacity, FlatList} from '../';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;
@@ -34,26 +34,27 @@ export default class ViewDiscovery extends ViewBase {
 
   fetchData(refresh) {
     if (refresh) {
-      this.setState({refreshing: true})
+      this.setState({refreshing: true});
       this.post(this.urls.FETCH_HOME).then(e => {
-        alert(e);
+        this.setState({refreshing: false});
+        this.setState({themes: e.themes, users: e.users});
+      }, e => {
+        this.setState({refreshing: false});
       });
-      // this.page = 0;
+      this.page = 0;
+      this.state.wallpapers = [];
     }
-    // if (this.state.wallpapers.length % 30 > 0 && this.page > 0) return;
-    // Wallpaper.query.equalTo('status', 0).descending('createdAt').skip(this.page * 30).limit(30).find().then(e => {
-    //   let ls = e.map(item => {
-    //     return {wallpaper: item, key: item.id, id: item.id, name: item.get('name'), image: item.get('image').thumbnailURL(this.getPixel(160), this.getPixel(90)), uri: item.get('image').url()};
-    //   });
-    //   this.setState({wallpapers: refresh ? ls : this.state.wallpapers.concat(ls)});
-    // });
-    // this.page++;
+    if (this.state.wallpapers.length % 30 > 0 && this.page > 0) return;
+    this.post(this.urls.FETCH_WALLPAPERS, {page: this.page, rows: 30}).then(e => {
+      this.setState({wallpapers: this.state.wallpapers.concat(e.data)});
+    });
+    this.page++;
   }
 
   openPreview(wp) {
     this.props.navigator.push({
       screen: 'Wallpaper',
-      passProps: wp
+      passProps: {data: wp}
     });
   }
 
@@ -83,6 +84,7 @@ export default class ViewDiscovery extends ViewBase {
         refreshing={this.state.refreshing}
         ListHeaderComponent={this.renderHeader()}
         renderItem={this.renderItem.bind(this)}
+        keyExtractor={item => item.id}
         ListFooterComponent={<Text style={{width: this.fw, paddingTop: 32, paddingBottom: 32, fontSize: 13, color: '#999', textAlign: 'center'}}>{this.state.wallpapers.length % 30 > 0 ? '没有更多了' : '正在加载...'}</Text>}
         onRefresh={() => this.fetchData(true)}
         onEndReached={() => this.fetchData()}

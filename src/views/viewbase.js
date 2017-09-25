@@ -26,7 +26,7 @@ export default class ViewBase extends Component {
       let decryptedData = CryptoJS.AES.decrypt(text, key, {
         mode: CryptoJS.mode.ECB
       });
-      return JSON.parse(decryptedData.toString());
+      return JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
     };
     let fetchPromise = new Promise((resolve, reject) => {
       fetch(url, {
@@ -41,7 +41,7 @@ export default class ViewBase extends Component {
         } else if (status == 1) {
           reject(json);
         } else resolve(json);
-      }).catch(e => reject({status: 1, description: '网络不给力，请检查网络设置'}));
+      }).catch(e => reject({status: 1, description: '网络不给力，请检查网络设置', error: e}));
     });
     return fetchPromise;
   }

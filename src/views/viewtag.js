@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { Tag, View, FlatList, Image, Text, TouchableOpacity } from '../';
+import { View, FlatList, Image, Text, TouchableOpacity } from '../';
 
 export default class ViewTag extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;
@@ -26,12 +26,11 @@ export default class ViewTag extends ViewBase {
   componentWillMount() {
     this.getCache('VIEWCATEGORY_TAGS').then(e => {
       this.setState({tags: e || []});
-      Tag.query.equalTo('tag', null).equalTo('status', 0).find().then(results => {
-        let ls = results.map(item => {
-          return {key: item.id, id: item.id, name: item.get('name'), cover: item.get('cover').url(), wallpaper_count: item.get('wallpaper_count')};
-        });
-        this.setCache('VIEWCATEGORY_TAGS', ls);
-        this.setState({tags: ls});
+      this.post(this.urls.FETCH_TAGS, {rows: 100, tag_id: 0}).then(e => {
+        this.setCache('VIEWCATEGORY_TAGS', e.data);
+        this.setState({tags: e.data});
+      }, e => {
+        alert(JSON.stringify(e.error));
       });
     });
   }
@@ -50,6 +49,7 @@ export default class ViewTag extends ViewBase {
         data={this.state.tags}
         ListHeaderComponent={this.renderHeader()}
         renderItem={this.renderItem.bind(this)}
+        keyExtractor={item => item.id}
       />
     );
   }
@@ -68,7 +68,7 @@ export default class ViewTag extends ViewBase {
     let w = this.fw - 16;
     let h = w * 9 / 16;
     return (
-      <TouchableOpacity onPress={() => this.props.navigator.push({screen: 'WallpaperList', title: info.item.name, passProps: {id: info.item.id}, backButtonTitle: ''})} style={{width: w, height: h, marginBottom: info.index == (this.state.tags.length - 1) ? 16 : 8, marginLeft: 8}} activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => this.props.navigator.push({screen: 'WallpaperList', title: info.item.name, passProps: {data: info.item}, backButtonTitle: ''})} style={{width: w, height: h, marginBottom: info.index == (this.state.tags.length - 1) ? 16 : 8, marginLeft: 8}} activeOpacity={0.8}>
         <Image style={{width: w, height: h, borderRadius: 5, flexDirection: 'row'}} source={{uri: info.item.cover, cache: 'force-cache'}}>
           <View style={{height: 40, width: 40, borderRadius: 20, backgroundColor: this.mc, justifyContent: 'center', alignItems: 'center', marginLeft: 8, marginTop: 8, zIndex: 2}}>
             <Text style={{fontSize: 14, color: '#fff', backgroundColor: 'transparent'}}>{info.item.name}</Text>

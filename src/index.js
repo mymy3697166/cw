@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStora
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles, URLs } from './config/constants';
 import { registerRoutes } from './config/routes';
-import { Tag, Wallpaper, User, WallpaperTags, Theme, DownloadLog } from './config/models';
 import Loader from './components/loader';
 import Toast from './components/toast';
 import ComponentAvatar from './views/componentavatar';
@@ -38,8 +37,6 @@ export {
   Image, Navigation, ImageBackground,
   // 常量
   MAINCOLOR, Styles, URLs,
-  // 数据模型
-  Tag, Wallpaper, WallpaperTags, User, Theme, DownloadLog,
   // 自定义组件
   ComponentAvatar, Loader, Toast,
   // 页面
