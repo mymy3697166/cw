@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import CryptoJS from 'crypto-js';
-import { MAINCOLOR, URLs, AsyncStorage, Dimensions, StyleSheet, PixelRatio, Toast } from '../';
+import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, DB } from '../';
 
 export default class ViewBase extends Component {
+  static user;
   constructor(props) {
     super(props);
     let { width, height } = Dimensions.get('window');
@@ -11,9 +12,19 @@ export default class ViewBase extends Component {
     this.mc = MAINCOLOR;
     this.px = StyleSheet.hairlineWidth;
     this.urls = URLs;
+    this.ratio = PixelRatio.get();
+  }
+
+  currentUser() {
+    if (!ViewBase.user) {
+      let users = DB.objects('User').filtered('isLogin=true');
+      if (users.length > 0) ViewBase.user = new User(users[0]);
+    }
+    return ViewBase.user;
   }
 
   post(url, forms) {
+    let me = self;
     let encrypt = text => {
       let key = CryptoJS.enc.Utf8.parse('1U7a/=45a8Qw@e8T');
       let encryptedData = CryptoJS.AES.encrypt(JSON.stringify(text), key, {
@@ -29,10 +40,14 @@ export default class ViewBase extends Component {
       return JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
     };
     let fetchPromise = new Promise((resolve, reject) => {
+      forms = forms || {};
+      if (me.currentUser()) {
+        forms = _.extend(forms, {token: me.currentUser().token});
+      }
       fetch(url, {
         method: 'POST',
         headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-        body: JSON.stringify({data: encrypt(forms||{})})
+        body: JSON.stringify({data: encrypt(forms)})
       }).then((response) => response.json()).then(e => {
         let json = decrypt(e.data);
         let status = parseInt(json.status);
@@ -47,27 +62,19 @@ export default class ViewBase extends Component {
   }
 
   setCache(key, value) {
-    return new Promise((resolve, reject) => {
-      AsyncStorage.setItem(key, JSON.stringify(value), (error, result) => {
-        if (error) reject(error);
-        else resolve();
-      });
+    let caches = DB.objects('Cache').filtered('key="' + key + '"');
+    DB.write(() => {
+      if (caches.length > 0) DB.create('Cache', {key: key, value: JSON.stringify(value), createdAt: new Date()}, true);
+      else DB.create('Cache', {key: key, value: JSON.stringify(value), createdAt: new Date()});
     });
   }
 
   getCache(key) {
-    return new Promise((resolve, reject) => {
-      AsyncStorage.getItem(key, (error, result) => {
-        if (error) reject(error);
-        else resolve(JSON.parse(result));
-      });
-    });
+    let caches = DB.objects('Cache').filtered('key="' + key + '"');
+    if (caches.length > 0) return JSON.parse(caches[0].value);
+    return undefined;
   }
 
-  getPixel(dp) {
-    return PixelRatio.get() * dp;
-  }
-  
   success(msg) {
     Toast.success(msg);
   }

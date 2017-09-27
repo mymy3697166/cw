@@ -11,7 +11,8 @@
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.47.2",
 		"react-native-navigation": "^1.1.205",
-		"crypto-js": "3.1.9-1"
+		"crypto-js": "3.1.9-1",
+		"realm": "1.12.0"
 	},
 	"devDependencies": {
 		"babel-jest": "20.0.3",

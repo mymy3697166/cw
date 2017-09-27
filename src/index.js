@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStora
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles, URLs } from './config/constants';
 import { registerRoutes } from './config/routes';
+import DB from './config/db';
+import _ from './components/underscore';
 import Loader from './components/loader';
 import Toast from './components/toast';
 import ComponentAvatar from './views/componentavatar';
@@ -35,6 +37,8 @@ export {
   View, Text, TouchableOpacity, FlatList, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll,
   // 扩展系统组件
   Image, Navigation, ImageBackground,
+  // realm数据库
+  DB, _,
   // 常量
   MAINCOLOR, Styles, URLs,
   // 自定义组件
