@@ -17,14 +17,14 @@ export default class ViewBase extends Component {
 
   currentUser() {
     if (!ViewBase.user) {
-      let users = DB.objects('User').filtered('isLogin=true');
-      if (users.length > 0) ViewBase.user = new User(users[0]);
+      let users = DB.objects('User').filtered('isLogin = true');
+      if (users.length > 0) ViewBase.user = users[0];
     }
     return ViewBase.user;
   }
 
   post(url, forms) {
-    let me = self;
+    let me = this;
     let encrypt = text => {
       let key = CryptoJS.enc.Utf8.parse('1U7a/=45a8Qw@e8T');
       let encryptedData = CryptoJS.AES.encrypt(JSON.stringify(text), key, {
@@ -56,7 +56,9 @@ export default class ViewBase extends Component {
         } else if (status == 1) {
           reject(json);
         } else resolve(json);
-      }).catch(e => reject({status: 1, description: '网络不给力，请检查网络设置', error: e}));
+      }).catch(e => {
+        reject({status: 1, description: '网络不给力，请检查网络设置'});
+      });
     });
     return fetchPromise;
   }

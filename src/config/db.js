@@ -25,10 +25,10 @@ const Schemas = [
           role: {type: 'int', default: 0},
           favorite_count: {type: 'int', default: 0},
           wallpaper_count: {type: 'int', default: 0},
-          isLogin: {type: 'int', default: 0}
+          isLogin: {type: 'bool', default: false}
         }
       }
-    ], schemaVersion: 1, migration: (oldRealm, newRealm) => {}
+    ], schemaVersion: 2, migration: (oldRealm, newRealm) => {}
   }
 ];
 
@@ -40,4 +40,5 @@ if (nextSchemaIndex > -1) {
   }
 }
 
-export default const DB = new Realm(Schemas[Schemas.length - 1]);
+const DB = new Realm(Schemas[Schemas.length - 1]);
+export default DB;

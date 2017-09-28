@@ -36,8 +36,7 @@ export default class ViewDiscovery extends ViewBase {
     if (refresh) {
       this.setState({refreshing: true});
       this.post(this.urls.FETCH_HOME).then(e => {
-        this.setState({refreshing: false});
-        this.setState({themes: e.themes, users: e.users});
+        this.setState({themes: e.themes, users: e.users, refreshing: false});
       }, e => {
         this.setState({refreshing: false});
       });
@@ -47,6 +46,8 @@ export default class ViewDiscovery extends ViewBase {
     if (this.state.wallpapers.length % 30 > 0 && this.page > 0) return;
     this.post(this.urls.FETCH_WALLPAPERS, {page: this.page, rows: 30}).then(e => {
       this.setState({wallpapers: this.state.wallpapers.concat(e.data)});
+    }, e => {
+
     });
     this.page++;
   }

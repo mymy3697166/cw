@@ -19,19 +19,16 @@ export default class ViewTag extends ViewBase {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     this.state = {
-      tags: []
+      tags: this.getCache('VIEWTAG_TAGS') || []
     };
   }
 
-  componentWillMount() {
-    this.getCache('VIEWCATEGORY_TAGS').then(e => {
-      this.setState({tags: e || []});
-      this.post(this.urls.FETCH_TAGS, {rows: 100, tag_id: 0}).then(e => {
-        this.setCache('VIEWCATEGORY_TAGS', e.data);
-        this.setState({tags: e.data});
-      }, e => {
-        alert(JSON.stringify(e.error));
-      });
+  componentDidMount() {
+    this.post(this.urls.FETCH_TAGS, {rows: 100, tag_id: 0}).then(e => {
+      this.setCache('VIEWTAG_TAGS', e.data);
+      this.setState({tags: e.data});
+    }, e => {
+      
     });
   }
 
