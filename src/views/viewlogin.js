@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { View, Text, TextInput, TouchableOpacity, Image, MAINCOLOR, Modal } from '../';
+import { View, Text, TextInput, TouchableOpacity, Image, MAINCOLOR, Modal, _ } from '../';
 
 export default class ViewLogin extends ViewBase {
   static navigatorStyle = Styles.noNavigatorStyle;
@@ -14,7 +14,8 @@ export default class ViewLogin extends ViewBase {
       code: '',
       sending: false,
       send_text: '发送验证码',
-      show_captcha: false
+      show_captcha: false,
+      captcha: ''
     };
   }
 
@@ -32,27 +33,28 @@ export default class ViewLogin extends ViewBase {
     this.code_id = new Date().getTime();
     this.setState({
       captcha_image: {uri: `${this.urls.CAPTCHA}?code_id=${this.code_id}`},
-      captcha_0: '',
-      captcha_1: '',
-      captcha_2: '',
-      captcha_3: ''
+      captchas: ['', '', '', '']
     });
   }
 
-  onCaptchaInputChangeText(index, value) {
-    this.setState({`captcha_${index}`: value});
-    if (index < 3) {
-      this.refs[``]
-    }
-    if (e.length >= 4) {
-      this.showLoading();
-      this.post(this.urls.LOGIN_CODE, {phone: this.state.phone}).then(e => {
-        this.hideLoading();
-      }, e => {
-        alert(JSON.stringify(e));
-        this.hideLoading();
-      });
-    }
+  onCaptchaInputChangeText(e) {
+    this.setState({captcha: e});
+    // if (value == '') {
+    //   if (index > 0) this.refs['captchaInput_' + (index - 1).toString()].focus();
+    //   return;
+    // }
+    // if (index < 3) {
+    //   this.refs['captchaInput_' + (index + 1).toString()].focus();
+    // }
+    // if (e.length >= 4) {
+    //   this.showLoading();
+    //   this.post(this.urls.LOGIN_CODE, {phone: this.state.phone}).then(e => {
+    //     this.hideLoading();
+    //   }, e => {
+    //     alert(JSON.stringify(e));
+    //     this.hideLoading();
+    //   });
+    // }
   }
 
   render() {
@@ -98,17 +100,18 @@ export default class ViewLogin extends ViewBase {
                 </TouchableOpacity>
               </View>
               <View style={{flexDirection: 'row'}}>
-                <View style={{width: 40, height: 40, borderWidth: 1, borderColor: '#999'}}>
-                  <TextInput maxLength={1} keyboardType='numeric' ref='captchaInput_0' value={this.state.captcha_0} onChangeText={e => this.onCaptchaInputChangeText(0, e)} caretHidden={true} style={{flex: 1, textAlign: 'center', fontSize: 24}} autoFocus={true} />
+                <TextInput maxLength={4} keyboardType='numeric' ref='captchaInput' value={this.state.captcha} onChangeText={e => this.onCaptchaInputChangeText(e)} style={{width: 0, height: 0}} autoFocus={true} />
+                <View style={{width: 40, height: 40, borderWidth: 1, borderColor: '#999', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 24}}>{this.state.captcha[0]}</Text>
                 </View>
-                <View style={{width: 40, height: 40, marginLeft: 8, borderWidth: 1, borderColor: '#999'}}>
-                  <TextInput maxLength={1} keyboardType='numeric' ref='captchaInput_1' value={this.state.captcha_1} onChangeText={e => this.onCaptchaInputChangeText(1, e)} caretHidden={true} style={{flex: 1, textAlign: 'center', fontSize: 24}} />
+                <View style={{width: 40, height: 40, marginLeft: 8, borderWidth: 1, borderColor: '#999', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 24}}>{this.state.captcha[1]}</Text>
                 </View>
-                <View style={{width: 40, height: 40, marginLeft: 8, borderWidth: 1, borderColor: '#999'}}>
-                  <TextInput maxLength={1} keyboardType='numeric' ref='captchaInput_2' value={this.state.captcha_2} onChangeText={e => this.onCaptchaInputChangeText(2, e)} caretHidden={true} style={{flex: 1, textAlign: 'center', fontSize: 24}} />
+                <View style={{width: 40, height: 40, marginLeft: 8, borderWidth: 1, borderColor: '#999', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 24}}>{this.state.captcha[2]}</Text>
                 </View>
-                <View style={{width: 40, height: 40, marginLeft: 8, borderWidth: 1, borderColor: '#999'}}>
-                  <TextInput maxLength={1} keyboardType='numeric' ref='captchaInput_3' value={this.state.captcha_3} onChangeText={e => this.onCaptchaInputChangeText(3, e)} caretHidden={true} style={{flex: 1, textAlign: 'center', fontSize: 24}} />
+                <View style={{width: 40, height: 40, marginLeft: 8, borderWidth: 1, borderColor: '#999', justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 24}}>{this.state.captcha[3]}</Text>
                 </View>
               </View>
             </View>
