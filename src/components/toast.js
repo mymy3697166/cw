@@ -15,7 +15,7 @@ export default class Toast {
   }
 
   static error(msg) {
-
+    
   }
 
   static showLoading() {

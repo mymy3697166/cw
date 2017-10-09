@@ -24,11 +24,10 @@ const Schemas = [
           money: {type: 'int', default: 0},
           role: {type: 'int', default: 0},
           favorite_count: {type: 'int', default: 0},
-          wallpaper_count: {type: 'int', default: 0},
-          isLogin: {type: 'bool', default: false}
+          wallpaper_count: {type: 'int', default: 0}
         }
       }
-    ], schemaVersion: 2, migration: (oldRealm, newRealm) => {}
+    ], schemaVersion: 4, migration: (oldRealm, newRealm) => {}
   }
 ];
 

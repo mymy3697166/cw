@@ -28,6 +28,10 @@ static UIView *loadingView;
   if (!toastView) {
     toastView = [[UIView alloc] initWithFrame:CGRectMake(0, -80, width, 80)];
     toastView.backgroundColor = UIColor.whiteColor;
+    toastView.layer.shadowColor = UIColor.blackColor.CGColor;
+    toastView.layer.shadowOffset = CGSizeMake(0, 0);
+    toastView.layer.shadowRadius = 5;
+    toastView.layer.shadowOpacity = 0.5;
     
     iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(16, 46, 24, 24)];
     
@@ -44,7 +48,7 @@ static UIView *loadingView;
     loadingBgView = [[UIView alloc] initWithFrame:CGRectMake((width - lvw) / 2, (height - lvh) / 2, lvw, lvh)];
     loadingBgView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.8];
     loadingBgView.layer.cornerRadius = 10;
-    indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     indicator.frame = CGRectMake((lvw - 37) / 2, (lvh - 37) / 2, 37, 37);
     [loadingBgView addSubview:indicator];
     [loadingView addSubview:loadingBgView];

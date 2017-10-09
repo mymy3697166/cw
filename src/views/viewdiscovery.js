@@ -38,6 +38,7 @@ export default class ViewDiscovery extends ViewBase {
       this.post(this.urls.FETCH_HOME).then(e => {
         this.setState({themes: e.themes, users: e.users, refreshing: false});
       }, e => {
+        this.warn(e.description);
         this.setState({refreshing: false});
       });
       this.page = 0;
@@ -47,7 +48,7 @@ export default class ViewDiscovery extends ViewBase {
     this.post(this.urls.FETCH_WALLPAPERS, {page: this.page, rows: 30}).then(e => {
       this.setState({wallpapers: this.state.wallpapers.concat(e.data)});
     }, e => {
-
+      this.warn(e.description);
     });
     this.page++;
   }
@@ -61,8 +62,8 @@ export default class ViewDiscovery extends ViewBase {
 
   onNavigatorEvent(event) {
     if (event.id == 'btnToggleDrawer') {
-      // this.props.navigator.toggleDrawer();
-      this.props.navigator.showModal({
+      if (this.currentUser()) this.props.navigator.toggleDrawer();
+      else this.props.navigator.showModal({
         screen: 'Login'
       });
     }

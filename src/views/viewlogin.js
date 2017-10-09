@@ -10,7 +10,6 @@ export default class ViewLogin extends ViewBase {
     this.code_id = new Date().getTime();
     this.state = {
       phone: '',
-      captcha_image: {uri: `${this.urls.CAPTCHA}?code_id=${this.code_id}`},
       code: '',
       sending: false,
       send_text: '发送验证码',
@@ -19,42 +18,78 @@ export default class ViewLogin extends ViewBase {
     };
   }
 
+  componentWillUnmount() {
+    this.ti && clearInterval(this.ti);
+  }
+
   onBgPress() {
     this.refs.phoneInput.blur();
-    this.refs.captchaInput.blur();
+    this.refs.codeInput.blur();
   }
 
   onSendPress() {
+    if (!/^1[0-9]{10,10}$/.test(this.state.phone)) {
+      this.warn('请正确填写手机号码');
+      return;
+    }
     this.onRefreshPress();
-    this.setState({show_captcha: true});
   }
 
   onRefreshPress() {
-    this.code_id = new Date().getTime();
     this.setState({
-      captcha_image: {uri: `${this.urls.CAPTCHA}?code_id=${this.code_id}`},
-      captchas: ['', '', '', '']
+      show_captcha: true,
+      captcha_image: {uri: `${this.urls.CAPTCHA}?phone=${this.state.phone}&time=${new Date().getTime()}`},
+      captcha: ''
     });
   }
 
   onCaptchaInputChangeText(e) {
     this.setState({captcha: e});
-    // if (value == '') {
-    //   if (index > 0) this.refs['captchaInput_' + (index - 1).toString()].focus();
-    //   return;
-    // }
-    // if (index < 3) {
-    //   this.refs['captchaInput_' + (index + 1).toString()].focus();
-    // }
-    // if (e.length >= 4) {
-    //   this.showLoading();
-    //   this.post(this.urls.LOGIN_CODE, {phone: this.state.phone}).then(e => {
-    //     this.hideLoading();
-    //   }, e => {
-    //     alert(JSON.stringify(e));
-    //     this.hideLoading();
-    //   });
-    // }
+    if (e.length >= 4) {
+      this.showLoading();
+      this.post(this.urls.LOGIN_CODE, {phone: this.state.phone, captcha: e}).then(e => {
+        this.hideLoading();
+        this.success('验证码已发出，请耐心等待');
+        this.setState({show_captcha: false, sending: true, send_text: '重新发送(60S)'});
+        this.ti = setInterval(() => {
+          this.sending_time = this.sending_time || 60;
+          this.sending_time--;
+          this.setState({send_text: `重新发送(${this.sending_time}S)`});
+          if (this.sending_time == 0) {
+            clearInterval(this.ti);
+            this.setState({sending: false, send_text: '重新发送'});
+          } 
+        }, 1000);
+      }, e => {
+        this.warn(e.description);
+        this.hideLoading();
+      });
+    }
+  }
+
+  onClosePress() {
+    this.onBgPress();
+    this.props.navigator.dismissModal();
+  }
+
+  onLoginPress() {
+    if (!/^1[0-9]{10,10}$/.test(this.state.phone)) {
+      this.warn('请正确填写手机号码');
+      return;
+    }
+    if (!/^[0-9]{6,6}$/.test(this.state.code)) {
+      this.warn('请正确填写验证码');
+      return;
+    }
+    this.showLoading();
+    this.post(this.urls.LOGIN, {phone: this.state.phone, code: this.state.code}).then(e => {
+      this.hideLoading();
+      this.updateUser(e.data);
+      this.props.navigator.dismissModal();
+    }, e => {
+      this.hideLoading();
+      this.warn(e.description);
+    });
   }
 
   render() {
@@ -87,14 +122,14 @@ export default class ViewLogin extends ViewBase {
           </TouchableOpacity>
         </View>
         <Text style={{color: '#999', fontSize: 12, marginTop: 16, width: this.fw - 64, textAlign: 'right'}}>无须注册直接登录</Text>
-        <TouchableOpacity activeOpacity={0.8} style={{marginTop: 32, width: this.fw - 64, borderRadius: 5, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: MAINCOLOR}}>
+        <TouchableOpacity onPress={this.onLoginPress.bind(this)} activeOpacity={0.8} style={{marginTop: 32, width: this.fw - 64, borderRadius: 5, height: 48, justifyContent: 'center', alignItems: 'center', backgroundColor: MAINCOLOR}}>
           <Text style={{color: '#fff', backgroundColor: 'transparent', fontSize: 18}}>登录</Text>
         </TouchableOpacity>
         <Modal animationType='fade' visible={this.state.show_captcha} transparent={true}>
           <TouchableOpacity activeOpacity={1} style={{flex: 1, backgroundColor: '#0008', justifyContent: 'center', alignItems: 'center'}}>
             <View style={{width: this.fw * 0.7, height: this.fw * 0.4, backgroundColor: '#fff', borderRadius: 10, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap'}}>
               <View style={{width: this.fw * 0.7, height: 48, marginBottom: 16, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <Image source={this.state.captcha_image} style={{width: 96, height: 48, backgroundColor: '#666'}} />
+                <Image source={this.state.captcha_image} style={{width: 96, height: 48, backgroundColor: '#f1f1f1'}} />
                 <TouchableOpacity onPress={this.onRefreshPress.bind(this)} style={{padding: 8, justifyContent: 'center'}}>
                   <Image source={require('../assets/icon_refresh.png')} style={{tintColor: '#bbb'}} />
                 </TouchableOpacity>
@@ -117,6 +152,9 @@ export default class ViewLogin extends ViewBase {
             </View>
           </TouchableOpacity>
         </Modal>
+        <TouchableOpacity onPress={this.onClosePress.bind(this)} style={{width: 50, height: 64, position: 'absolute', top: 0, left: 0, alignItems: 'center', paddingTop: 33}}>
+          <Image source={require('../assets/icon_close.png')} style={{tintColor: '#999'}} />
+        </TouchableOpacity>
       </TouchableOpacity>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CryptoJS from 'crypto-js';
-import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, DB } from '../';
+import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, DB, _ } from '../';
 
 export default class ViewBase extends Component {
   static user;
@@ -17,10 +17,18 @@ export default class ViewBase extends Component {
 
   currentUser() {
     if (!ViewBase.user) {
-      let users = DB.objects('User').filtered('isLogin = true');
+      let users = DB.objects('User');
       if (users.length > 0) ViewBase.user = users[0];
     }
     return ViewBase.user;
+  }
+
+  updateUser(user) {
+    let users = DB.objects('User');
+    DB.write(() => {
+      DB.delete(users);
+      DB.create('User', user);
+    });
   }
 
   post(url, forms) {
@@ -57,7 +65,7 @@ export default class ViewBase extends Component {
           reject(json);
         } else resolve(json);
       }).catch(e => {
-        reject({status: 1, description: '网络不给力，请检查网络设置'});
+        reject({status: 1, description: '服务器繁忙，请稍后重试'});
       });
     });
     return fetchPromise;
