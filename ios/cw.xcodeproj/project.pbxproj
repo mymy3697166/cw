@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000434891F8BAE5A00E2D287 /* CWNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 000434881F8BAE5A00E2D287 /* CWNotification.m */; };
 		0043B9651F7BE68B0011F59C /* libRealmJS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0043B9661F7BE68B0011F59C /* libRealmJS.a */; };
 		0043B9671F7BE6980011F59C /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0043B9631F7BE6650011F59C /* libRealmReact.a */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -259,6 +260,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		000434871F8BAE5A00E2D287 /* CWNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CWNotification.h; sourceTree = "<group>"; };
+		000434881F8BAE5A00E2D287 /* CWNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CWNotification.m; sourceTree = "<group>"; };
 		0043B93F1F7BE6650011F59C /* RealmReact.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
 		0043B9661F7BE68B0011F59C /* libRealmJS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRealmJS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -463,6 +466,8 @@
 				5C418DAD1F6BBCA300DFB84B /* CWLoader.m */,
 				00D14AC61F7001A400202050 /* CWToast.h */,
 				00D14AC71F7001A400202050 /* CWToast.m */,
+				000434871F8BAE5A00E2D287 /* CWNotification.h */,
+				000434881F8BAE5A00E2D287 /* CWNotification.m */,
 			);
 			name = modules;
 			path = cw/modules;
@@ -937,6 +942,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				000434891F8BAE5A00E2D287 /* CWNotification.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				00D14AC81F7001A400202050 /* CWToast.m in Sources */,
 				5C418DAE1F6BBCA300DFB84B /* CWLoader.m in Sources */,

@@ -9,8 +9,7 @@ export default class ViewDiscovery extends ViewBase {
     leftButtons: [
       {
         id: 'btnToggleDrawer',
-        component: 'Avatar',
-        passProps: {data: {avatar: 'http://ac-jo3ojp37.clouddn.com/830b1d1e435e7d8c364c.png', width: 32, height: 32}}
+        component: 'Avatar'
       }
     ]
   };

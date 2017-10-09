@@ -82,9 +82,10 @@ export default class ViewLogin extends ViewBase {
       return;
     }
     this.showLoading();
-    this.post(this.urls.LOGIN, {phone: this.state.phone, code: this.state.code}).then(e => {
+    this.post(this.urls.LOGIN, {phone: this.state.phone, code: this.state.code, x: this.ratio}).then(e => {
       this.hideLoading();
       this.updateUser(e.data);
+      this.n.broadcast('LOGINSUCCESS'); // 发送登录成功通知
       this.props.navigator.dismissModal();
     }, e => {
       this.hideLoading();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CryptoJS from 'crypto-js';
-import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, DB, _ } from '../';
+import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, Notification, DB, _ } from '../';
 
 export default class ViewBase extends Component {
   static user;
@@ -13,6 +13,7 @@ export default class ViewBase extends Component {
     this.px = StyleSheet.hairlineWidth;
     this.urls = URLs;
     this.ratio = PixelRatio.get();
+    this.n = Notification;
   }
 
   currentUser() {
@@ -29,6 +30,15 @@ export default class ViewBase extends Component {
       DB.delete(users);
       DB.create('User', user);
     });
+  }
+
+  logout() {
+    let users = DB.objects('User');
+    DB.write(() => {
+      DB.delete(users);
+    });
+    delete ViewBase.user;
+    this.n.broadcast('LOGOUTSUCCESS');
   }
 
   post(url, forms) {

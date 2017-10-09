@@ -7,6 +7,7 @@ import DB from './config/db';
 import _ from './components/underscore';
 import Loader from './components/loader';
 import Toast from './components/toast';
+import Notification from './components/notification';
 import ComponentAvatar from './views/componentavatar';
 import ViewDiscovery from './views/viewdiscovery';
 import ViewTag from './views/viewtag';
@@ -42,7 +43,7 @@ export {
   // 常量
   MAINCOLOR, Styles, URLs,
   // 自定义组件
-  ComponentAvatar, Loader, Toast,
+  ComponentAvatar, Loader, Toast, Notification,
   // 页面
   ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList, ViewWallpaper, ViewLogin
 };

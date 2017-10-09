@@ -1,6 +1,6 @@
 import React from 'react';
 import ViewBase from './viewbase';
-import { View } from '../';
+import { View, TouchableOpacity, Text } from '../';
 
 export default class ViewDrawer extends ViewBase {
   constructor(props) {
@@ -10,10 +10,18 @@ export default class ViewDrawer extends ViewBase {
     };
   }
 
+  onLogoutPress() {
+    this.logout();
+  }
+
   render() {
     let data = this.state.data;
     return (
-      <View style={{flex: 1, backgroundColor: 'green'}}></View>
+      <View style={{flex: 1}}>
+        <TouchableOpacity style={{width: 64, height: 32, justifyContent: 'center', alignItems: 'center', marginTop: 64}} onPress={this.onLogoutPress.bind(this)}>
+          <Text>退出</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
