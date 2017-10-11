@@ -1,12 +1,14 @@
 // const baseURL = 'http://192.168.0.209:3000/';
 const baseURL = 'http://192.168.1.153:3000/';
 export const URLs = {
-  CAPTCHA: `${baseURL}api/captcha`,
-  LOGIN: `${baseURL}api/user/login`,
-  LOGIN_CODE: `${baseURL}api/user/login_code`,
-  FETCH_HOME: `${baseURL}api/fetch_home`,
-  FETCH_WALLPAPERS: `${baseURL}api/wallpaper/fetch`,
-  FETCH_TAGS: `${baseURL}api/tag/fetch`,
+  CAPTCHA: `${baseURL}api/captcha`,                                       // 图形验证码
+  LOGIN: `${baseURL}api/user/login`,                                      // 登录
+  LOGIN_CODE: `${baseURL}api/user/login_code`,                            // 登录验证码
+  FAVORITE: `${baseURL}api/user/favorite`,                                // 收藏/取消收藏
+  FETCH_HOME: `${baseURL}api/fetch_home`,                                 // 拉取首页数据
+  FETCH_WALLPAPERS: `${baseURL}api/wallpaper/fetch`,                      // 拉取壁纸列表
+  DOWNLOAD: `${baseURL}api/wallpaper/download`,                           // 下载记录
+  FETCH_TAGS: `${baseURL}api/tag/fetch`,                                  // 拉取标签列表
 };
 
 export const MAINCOLORS = [

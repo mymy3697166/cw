@@ -45,16 +45,10 @@ export default class ViewWallpaper extends ViewBase {
 
   onDownloadPress() {
     if (this.loaded) {
-      CameraRoll.saveImageWithTag(this.state.image.uri).then(e => {
-        this.success('保存成功');
-        let wp = this.props.wallpaper;
-        // let log = new DownloadLog();
-        // log.set('status', 0);
-        // log.set('user', this.user);
-        // log.set('wallpaper', wp);
-        // log.save();
-        // wp.set('download_count', wp.get('download_count') + 1);
-        // wp.save();
+      CameraRoll.saveToCameraRoll(this.state.image.uri).then(e => {
+        this.success('成功保存至相册');
+        let wp = this.props.data;
+        this.post(this.urls.DOWNLOAD, {id: wp.id});
       });
     } else {
       this.warn('图片加载中，请稍候重试');
