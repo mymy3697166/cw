@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, NetInfo, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll } from 'react-native';
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles, URLs } from './config/constants';
 import { registerRoutes } from './config/routes';
 import DB from './config/db';
+import Http from './config/http';
 import _ from './components/underscore';
 import Loader from './components/loader';
 import Toast from './components/toast';
@@ -31,15 +32,16 @@ const ImageBackground = Platform.OS == 'ios' ? require('ImageBackground') : clas
 // APP初始化
 export default function init() {
   registerRoutes();
+  Http.startListen();
 }
 // 导出组件
 export {
   // 系统组件
-  View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll,
+  View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, NetInfo, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll,
   // 扩展系统组件
   Image, Navigation, ImageBackground,
   // realm数据库
-  DB, _,
+  DB, _, Http,
   // 常量
   MAINCOLOR, Styles, URLs,
   // 自定义组件

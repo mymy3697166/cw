@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import CryptoJS from 'crypto-js';
-import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, Notification, DB, _ } from '../';
+import { MAINCOLOR, URLs, Dimensions, StyleSheet, PixelRatio, Toast, Notification, DB, _, Http } from '../';
 
 export default class ViewBase extends Component {
   static user;
@@ -43,42 +42,11 @@ export default class ViewBase extends Component {
 
   post(url, forms) {
     let me = this;
-    let encrypt = text => {
-      let key = CryptoJS.enc.Utf8.parse('1U7a/=45a8Qw@e8T');
-      let encryptedData = CryptoJS.AES.encrypt(JSON.stringify(text), key, {
-        mode: CryptoJS.mode.ECB
-      });
-      return encryptedData.toString();
-    };
-    let decrypt = text => {
-      let key = CryptoJS.enc.Utf8.parse('1U7a/=45a8Qw@e8T');
-      let decryptedData = CryptoJS.AES.decrypt(text, key, {
-        mode: CryptoJS.mode.ECB
-      });
-      return JSON.parse(decryptedData.toString(CryptoJS.enc.Utf8));
-    };
-    let fetchPromise = new Promise((resolve, reject) => {
-      forms = forms || {};
-      if (me.currentUser()) {
-        forms = _.extend(forms, {token: me.currentUser().token});
-      }
-      fetch(url, {
-        method: 'POST',
-        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
-        body: JSON.stringify({data: encrypt(forms)})
-      }).then((response) => response.json()).then(e => {
-        let json = decrypt(e.data);
-        let status = parseInt(json.status);
-        if (status >= 400) {
-          reject({status: 1, description: '服务器繁忙，请稍后重试'});
-        } else if (status == 1) {
-          reject(json);
-        } else resolve(json);
-      }).catch(e => {
-        reject({status: 1, description: '服务器繁忙，请稍后重试'});
-      });
-    });
-    return fetchPromise;
+    forms = forms || {};
+    if (me.currentUser()) {
+      forms = _.extend(forms, {token: me.currentUser().token});
+    }
+    return Http.post(url, forms);
   }
 
   setCache(key, value) {
