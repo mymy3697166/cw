@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { View, ScrollView, Image, Text, TouchableOpacity, FlatList} from '../';
+import { View, ScrollView, Image, Text, TouchableOpacity, FlatList, _ } from '../';
 
 export default class ViewDiscovery extends ViewBase {
   static navigatorStyle = Styles.navigatorStyle;
@@ -29,6 +29,13 @@ export default class ViewDiscovery extends ViewBase {
   }
   componentDidMount() {
     this.fetchData(true);
+    this.n.addListener('WALLPAPERUPDATESUCCESS', e => {
+      if (e.type == 'Wallpaper') {
+        let wp = _.find(this.state.wallpapers, item => item.id == e.id);
+        if (wp) wp = _.extend(wp, e);
+        this.setState({wallpapers: _.clone(this.state.wallpapers)});
+      }
+    });
   }
 
   fetchData(refresh) {

@@ -10,6 +10,8 @@ export default class ViewWallpaper extends ViewBase {
   
     this.state = {
       image: {uri: this.props.data.image, cache: 'force-cache'},
+      favorite_count: this.props.data.favorite_count,
+      is_favorite: this.props.data.is_favorite,
       barTop: 0,
       barBottom: 0,
       diyBottom: 52
@@ -44,6 +46,10 @@ export default class ViewWallpaper extends ViewBase {
   }
 
   onDownloadPress() {
+    if (!this.currentUser()) {
+      this.props.navigator.showModal({screen: 'Login'});
+      return;
+    }
     if (this.loaded) {
       CameraRoll.saveToCameraRoll(this.state.image.uri).then(e => {
         this.success('成功保存至相册');
@@ -53,6 +59,17 @@ export default class ViewWallpaper extends ViewBase {
     } else {
       this.warn('图片加载中，请稍候重试');
     }
+  }
+
+  onFavoritePress() {
+    if (!this.currentUser()) {
+      this.props.navigator.showModal({screen: 'Login'});
+      return;
+    }
+    this.post(this.urls.FAVORITE, {id: this.props.data.id, type: 'Wallpaper'}).then(e => {
+      this.setState({favorite_count: e.favorite_count, is_favorite: e.is_favorite});
+      this.n.broadcast('WALLPAPERUPDATESUCCESS', {id: this.props.data.id, type: 'Wallpaper', favorite_count: e.favorite_count, is_favorite: e.is_favorite});
+    });
   }
 
   render() {
@@ -71,9 +88,9 @@ export default class ViewWallpaper extends ViewBase {
           </TouchableOpacity>
         </View>
         <View style={{position: 'absolute', bottom: this.state.barBottom, left: 0, height: 44, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row'}}>
-          <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+          <TouchableOpacity onPress={this.onFavoritePress.bind(this)} style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
             <Image source={require('../assets/icon_favorite.png')} style={{tintColor: '#fff'}} />
-            <Text style={{color: '#fff'}}>  收藏</Text>
+            <Text style={{color: '#fff'}}>  {this.state.is_favorite ? '已收藏' : '收藏'}({this.state.favorite_count})</Text>
           </TouchableOpacity>
           <View style={{backgroundColor: '#fff', width: this.px, height: 44}}></View>
           <TouchableOpacity onPress={this.onDownloadPress.bind(this)} style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
