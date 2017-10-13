@@ -50,7 +50,7 @@ export default class ViewLogin extends ViewBase {
       this.post(this.urls.LOGIN_CODE, {phone: this.state.phone, captcha: e}).then(e => {
         this.hideLoading();
         this.success('验证码已发出，请耐心等待');
-        this.codeInput.focus();
+        this.refs.codeInput.focus();
         this.setState({show_captcha: false, sending: true, send_text: '重新发送(60S)'});
         this.ti = setInterval(() => {
           this.sending_time = this.sending_time || 60;
@@ -62,8 +62,8 @@ export default class ViewLogin extends ViewBase {
           } 
         }, 1000);
       }, e => {
-        this.warn(e.description);
         this.hideLoading();
+        this.errorHandler(e);
       });
     }
   }
@@ -90,7 +90,7 @@ export default class ViewLogin extends ViewBase {
       this.props.navigator.dismissModal();
     }, e => {
       this.hideLoading();
-      this.warn(e.description);
+      this.errorHandler(e);
     });
   }
 

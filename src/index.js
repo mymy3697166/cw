@@ -16,6 +16,7 @@ import ViewDrawer from './views/viewdrawer';
 import ViewWallpaperList from './views/viewwallpaperlist';
 import ViewWallpaper from './views/viewwallpaper';
 import ViewLogin from './views/viewlogin';
+import ViewComment from './views/viewcomment';
 // 扩展系统组件
 const Image = Platform.OS == 'ios' ? require('Image') : class CacheImage extends Component {
   constructor(props) {
@@ -47,5 +48,5 @@ export {
   // 自定义组件
   ComponentAvatar, Loader, Toast, Notification,
   // 页面
-  ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList, ViewWallpaper, ViewLogin
+  ViewDiscovery, ViewTag, ViewDrawer, ViewWallpaperList, ViewWallpaper, ViewLogin, ViewComment
 };

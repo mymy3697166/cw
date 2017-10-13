@@ -12,6 +12,8 @@ export default class ViewWallpaper extends ViewBase {
       image: {uri: this.props.data.image, cache: 'force-cache'},
       favorite_count: this.props.data.favorite_count,
       is_favorite: this.props.data.is_favorite,
+      download_count: this.props.data.download_count,
+      comment_count: this.props.data.comment_count,
       barTop: 0,
       barBottom: 0,
       diyBottom: 52
@@ -51,10 +53,13 @@ export default class ViewWallpaper extends ViewBase {
       return;
     }
     if (this.loaded) {
-      CameraRoll.saveToCameraRoll(this.state.image.uri).then(e => {
+      CameraRoll.saveToCameraRoll(this.state.image.uri).then(() => {
         this.success('成功保存至相册');
         let wp = this.props.data;
-        this.post(this.urls.DOWNLOAD, {id: wp.id});
+        this.post(this.urls.DOWNLOAD, {id: wp.id}).then(e => {
+          this.setState({download_count: e.download_count});
+          this.n.broadcast('WALLPAPERUPDATESUCCESS', e);
+        });
       });
     } else {
       this.warn('图片加载中，请稍候重试');
@@ -68,7 +73,21 @@ export default class ViewWallpaper extends ViewBase {
     }
     this.post(this.urls.FAVORITE, {id: this.props.data.id, type: 'Wallpaper'}).then(e => {
       this.setState({favorite_count: e.favorite_count, is_favorite: e.is_favorite});
-      this.n.broadcast('WALLPAPERUPDATESUCCESS', {id: this.props.data.id, type: 'Wallpaper', favorite_count: e.favorite_count, is_favorite: e.is_favorite});
+      this.n.broadcast('WALLPAPERUPDATESUCCESS', e);
+    }, this.errorHandler);
+  }
+
+  onCommentPress() {
+    this.props.navigator.push({
+      screen: 'Comment',
+      title: '评论',
+      passProps: {
+        id: this.props.data.id,
+        type: 'Wallpaper',
+        image: this.props.data.image,
+        score: this.props.data.score,
+        comment_count: this.props.data.comment_count
+      }
     });
   }
 
@@ -95,12 +114,12 @@ export default class ViewWallpaper extends ViewBase {
           <View style={{backgroundColor: '#fff', width: this.px, height: 44}}></View>
           <TouchableOpacity onPress={this.onDownloadPress.bind(this)} style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
             <Image source={require('../assets/icon_download.png')} style={{tintColor: '#fff'}} />
-            <Text style={{color: '#fff'}}>  下载</Text>
+            <Text style={{color: '#fff'}}>  下载({this.state.download_count})</Text>
           </TouchableOpacity>
           <View style={{backgroundColor: '#fff', width: this.px, height: 44}}></View>
-          <TouchableOpacity style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+          <TouchableOpacity onPress={this.onCommentPress.bind(this)} style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
             <Image source={require('../assets/icon_comment.png')} style={{tintColor: '#fff'}} />
-            <Text style={{color: '#fff'}}>  评论</Text>
+            <Text style={{color: '#fff'}}>  评论({this.state.comment_count})</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity activeOpacity={0.8} style={{width: 40, height: 40, borderRadius: 20, backgroundColor: MAINCOLOR, position: 'absolute', right: 8, bottom: this.state.diyBottom, justifyContent: 'center', alignItems: 'center'}}>

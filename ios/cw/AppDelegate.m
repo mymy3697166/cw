@@ -17,6 +17,7 @@
   UIImage *backIcon = [UIImage imageNamed:@"icon_back"];
   [[UINavigationBar appearance] setBackIndicatorImage:backIcon];
   [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:backIcon];
+  [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(-10000, 0) forBarMetrics:UIBarMetricsDefault];
   NSURL *jsCodeLocation;
 #ifdef DEBUG
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];

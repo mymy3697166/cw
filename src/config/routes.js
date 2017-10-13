@@ -1,4 +1,4 @@
-import { MAINCOLOR, ViewDiscovery, ViewTag, ComponentAvatar, ViewDrawer, ViewWallpaperList, ViewWallpaper, ViewLogin, Navigation } from '../';
+import { MAINCOLOR, ViewDiscovery, ViewTag, ComponentAvatar, ViewDrawer, ViewWallpaperList, ViewWallpaper, ViewLogin, ViewComment, Navigation } from '../';
 
 export function registerRoutes() {
   Navigation.registerComponent('Avatar', () => ComponentAvatar);
@@ -9,6 +9,7 @@ export function registerRoutes() {
   Navigation.registerComponent('WallpaperList', () => ViewWallpaperList);
   Navigation.registerComponent('Wallpaper', () => ViewWallpaper);
   Navigation.registerComponent('Login', () => ViewLogin);
+  Navigation.registerComponent('Comment', () => ViewComment);
 
   Navigation.startTabBasedApp({
     tabs: [

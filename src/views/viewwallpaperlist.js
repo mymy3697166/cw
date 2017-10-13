@@ -8,7 +8,6 @@ export default class ViewWallpaperList extends ViewBase {
 
   constructor(props) {
     super(props);
-  
     this.state = {
       tags: this.props.data.tags,
       wallpapers: [],

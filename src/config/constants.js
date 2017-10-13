@@ -1,5 +1,5 @@
-// const baseURL = 'http://192.168.0.207:3000/';
-const baseURL = 'http://192.168.1.153:3000/';
+const baseURL = 'http://192.168.0.207:3000/';
+// const baseURL = 'http://192.168.1.153:3000/';
 export const URLs = {
   CAPTCHA: `${baseURL}api/captcha`,                                       // 图形验证码
   LOGIN: `${baseURL}api/user/login`,                                      // 登录
@@ -9,6 +9,9 @@ export const URLs = {
   FETCH_WALLPAPERS: `${baseURL}api/wallpaper/fetch`,                      // 拉取壁纸列表
   DOWNLOAD: `${baseURL}api/wallpaper/download`,                           // 下载记录
   FETCH_TAGS: `${baseURL}api/tag/fetch`,                                  // 拉取标签列表
+  FETCH_COMMENTS: `${baseURL}api/comment/fetch`,                          // 拉取评论
+  CREATE_COMMENT: `${baseURL}api/comment/create`,                         // 发表评论
+  DELETE_COMMENT: `${baseURL}api/comment/delete`,                         // 删除评论
 };
 
 export const MAINCOLORS = [

@@ -78,4 +78,14 @@ export default class ViewBase extends Component {
   hideLoading() {
     Toast.hideLoading();
   }
+
+  errorHandler(error) {
+    if (error.status == 403) this.props.navigator.showModal({screen: 'Login'});
+    else Toast.warn(error.description);
+  }
+
+  countFormat(count) {
+    if (count < 10000) return count;
+    return count.toFixed(1);
+  }
 }
