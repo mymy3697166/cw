@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, NetInfo, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, NetInfo, Dimensions, Keyboard, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll } from 'react-native';
 import { Navigation } from './components/react-native-navigation/src';
 import { MAINCOLOR, Styles, URLs } from './config/constants';
 import { registerRoutes } from './config/routes';
@@ -38,7 +38,7 @@ export default function init() {
 // 导出组件
 export {
   // 系统组件
-  View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, NetInfo, Dimensions, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll,
+  View, Text, TouchableOpacity, FlatList, Modal, TextInput, Platform, AsyncStorage, NetInfo, Dimensions, Keyboard, StyleSheet, ScrollView, PixelRatio, PanResponder, StatusBar, LayoutAnimation, NativeModules, NativeEventEmitter, requireNativeComponent, CameraRoll,
   // 扩展系统组件
   Image, Navigation, ImageBackground,
   // realm数据库
