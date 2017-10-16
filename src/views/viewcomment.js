@@ -42,15 +42,16 @@ export default class ViewComment extends ViewBase {
     this.setState({height: this.fh - 64});
   }
 
-  fetchData() {
+  fetchData(test) {
     this.post(this.urls.FETCH_COMMENTS, {
       object_type: this.props.type,
       object_id: this.props.id,
       page: this.page,
       x: this.ratio
     }).then(e => {
-      this.setState({comments: e.data});
-      this.page++;
+      if (this.page == 0) this.setState({comments: e.data});
+      else this.setState({comments: this.state.comments.concat(e.data)});
+      if (e.data.length == 30) this.page++;
     }, this.errorHandler);
   }
 
@@ -77,6 +78,11 @@ export default class ViewComment extends ViewBase {
     }, this.errorHandler.bind(this));
   }
 
+  loadingText() {
+    if (this.page == 0 && this.state.comments.length == 0) return '来抢个沙发吧';
+    return this.state.comments.length % 30 > 0 ? '没有更多了' : '正在加载...';
+  }
+
   render() {
     let sw = this.state.star * 40;
     return (
@@ -88,6 +94,10 @@ export default class ViewComment extends ViewBase {
           ListHeaderComponent={this.renderHeader()}
           renderItem={this.renderItem.bind(this)}
           keyExtractor={item => item.id}
+          onEndReached={() => this.page > 0 && this.fetchData('reached')}
+          onEndReachedThreshold={0.1}
+          scrollEventThrottle={0}
+          ListFooterComponent={<Text style={{width: this.fw, paddingTop: 32, paddingBottom: 32, fontSize: 13, color: '#999', textAlign: 'center'}}>{this.loadingText()}</Text>}
         />
         <View style={{height: 96, borderTopWidth: this.px, borderTopColor: '#eee', backgroundColor: '#f1f1f1', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
           <View style={{height: 48, width: this.fw, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff'}}>

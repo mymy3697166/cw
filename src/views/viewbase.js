@@ -83,6 +83,7 @@ export default class ViewBase extends Component {
     if (error.status == 403) {
       this.props.navigator.showModal({screen: 'Login'});
       this.logout();
+      this.warn('您的账号已在其它设备登录，请重新登录');
     }
     else Toast.warn(error.description);
   }

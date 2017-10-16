@@ -97,7 +97,7 @@ export default class ViewDiscovery extends ViewBase {
         ListFooterComponent={<Text style={{width: this.fw, paddingTop: 32, paddingBottom: 32, fontSize: 13, color: '#999', textAlign: 'center'}}>{this.state.wallpapers.length % 30 > 0 ? '没有更多了' : '正在加载...'}</Text>}
         onRefresh={() => this.fetchData(true)}
         onEndReached={() => this.fetchData()}
-        onEndReachedThreshold={0.1 / this.page}
+        onEndReachedThreshold={0.1}
         scrollEventThrottle={0}
       />
     );

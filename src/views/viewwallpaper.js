@@ -1,7 +1,7 @@
 import React from 'react';
 import ViewBase from './viewbase';
 import { Styles } from '../config/constants';
-import { MAINCOLOR, View, Image, Text, TouchableOpacity, LayoutAnimation, Loader, CameraRoll, DownloadLog } from '../';
+import { View, Image, Text, TouchableOpacity, LayoutAnimation, Loader, CameraRoll, DownloadLog } from '../';
 
 export default class ViewWallpaper extends ViewBase {
   static navigatorStyle = Styles.noNavigatorStyle;
@@ -100,7 +100,7 @@ export default class ViewWallpaper extends ViewBase {
         <TouchableOpacity onPress={this.onBgPress.bind(this)} activeOpacity={1} style={{flex: 1}}>
           <Image source={this.state.image} style={{flex: 1, backgroundColor: '#eee'}} />
         </TouchableOpacity>
-        <View style={{position: 'absolute', top: this.state.barTop, left: 0, height: 64, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row', paddingTop: 20, justifyContent: 'space-between'}}>
+        <View style={{position: 'absolute', top: this.state.barTop, left: 0, height: 64, width: this.fw, backgroundColor: this.mc, flexDirection: 'row', paddingTop: 20, justifyContent: 'space-between'}}>
           <TouchableOpacity onPress={() => this.props.navigator.pop()} style={{width: 42, height: 40, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={require('../assets/icon_back.png')} style={{tintColor: '#fff'}} />
           </TouchableOpacity>
@@ -109,7 +109,7 @@ export default class ViewWallpaper extends ViewBase {
             <Image source={require('../assets/icon_share.png')} style={{tintColor: '#fff'}} />
           </TouchableOpacity>
         </View>
-        <View style={{position: 'absolute', bottom: this.state.barBottom, left: 0, height: 44, width: this.fw, backgroundColor: MAINCOLOR, flexDirection: 'row'}}>
+        <View style={{position: 'absolute', bottom: this.state.barBottom, left: 0, height: 44, width: this.fw, backgroundColor: this.mc, flexDirection: 'row'}}>
           <TouchableOpacity onPress={this.onFavoritePress.bind(this)} style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
             <Image source={require('../assets/icon_favorite.png')} style={{tintColor: '#fff'}} />
             <Text style={{color: '#fff'}}>  {this.state.is_favorite ? '已收藏' : '收藏'}({this.state.favorite_count})</Text>
@@ -125,7 +125,7 @@ export default class ViewWallpaper extends ViewBase {
             <Text style={{color: '#fff'}}>  评论({this.state.comment_count})</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity activeOpacity={0.8} style={{width: 40, height: 40, borderRadius: 20, backgroundColor: MAINCOLOR, position: 'absolute', right: 8, bottom: this.state.diyBottom, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity activeOpacity={0.8} style={{width: 40, height: 40, borderRadius: 20, backgroundColor: this.mc, position: 'absolute', right: 8, bottom: this.state.diyBottom, justifyContent: 'center', alignItems: 'center'}}>
           <Image source={require('../assets/icon_diy.png')} style={{tintColor: '#fff'}} />
         </TouchableOpacity>
         <Loader onLoadFinish={this.onLoadFinish.bind(this)} ref={e => this.loader = e} style={{width: 50, height: 50, position: 'absolute', top: (this.fh - 50) / 2, left: (this.fw - 50) / 2, backgroundColor: 'transparent'}} />
