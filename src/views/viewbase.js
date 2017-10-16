@@ -80,12 +80,27 @@ export default class ViewBase extends Component {
   }
 
   errorHandler(error) {
-    if (error.status == 403) this.props.navigator.showModal({screen: 'Login'});
+    if (error.status == 403) {
+      this.props.navigator.showModal({screen: 'Login'});
+      this.logout();
+    }
     else Toast.warn(error.description);
   }
 
   countFormat(count) {
     if (count < 10000) return count;
     return count.toFixed(1);
+  }
+
+  timeFormat(time, past) {
+    if (past < 60) return `${past}秒前`;
+    if (past >= 60 && past < 3600) return `${parseInt(past / 60)}分钟前`;
+    if (past >= 3600 && past < 86400) return `${parseInt(past / 3600)}小时前`;
+    if (past >= 86400) {
+      let dt = new Date(time);
+      let m = dt.getMonth() + 1;
+      let d = dt.getDate();
+      return `${dt.getFullYear()}-${m > 9 ? m : '0' + m}-${d > 9 ? d : '0' + d}`;
+    }
   }
 }

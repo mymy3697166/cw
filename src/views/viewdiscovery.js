@@ -31,18 +31,16 @@ export default class ViewDiscovery extends ViewBase {
   componentDidMount() {
     this.fetchData(true);
     this.n.addListener('WALLPAPERUPDATESUCCESS', e => {
-      if (e.type == 'Wallpaper') {
-        let wps = [];
-        this.state.users.forEach(item => wps = wps.concat(item.wallpapers));
-        let uwp = _.find(wps, item => item.id == e.id);
-        if (uwp) uwp = _.extend(uwp, e);
-        let wp = _.find(this.state.wallpapers, item => item.id == e.id);
-        if (wp) wp = _.extend(wp, e);
-        this.setState({
-          users: _.clone(this.state.users),
-          wallpapers: _.clone(this.state.wallpapers)
-        });
-      }
+      let wps = [];
+      this.state.users.forEach(item => wps = wps.concat(item.wallpapers));
+      let uwp = _.find(wps, item => item.id == e.id);
+      if (uwp) uwp = _.extend(uwp, e);
+      let wp = _.find(this.state.wallpapers, item => item.id == e.id);
+      if (wp) wp = _.extend(wp, e);
+      this.setState({
+        users: _.clone(this.state.users),
+        wallpapers: _.clone(this.state.wallpapers)
+      });
     });
   }
 

@@ -14,6 +14,7 @@ export default class ViewWallpaper extends ViewBase {
       is_favorite: this.props.data.is_favorite,
       download_count: this.props.data.download_count,
       comment_count: this.props.data.comment_count,
+      score: this.props.data.score,
       barTop: 0,
       barBottom: 0,
       diyBottom: 52
@@ -26,10 +27,13 @@ export default class ViewWallpaper extends ViewBase {
       this.onBgPress();
     }, 3000);
     this.loader.download(this.props.data.image_original);
+    this.listener = this.n.addListener('WALLPAPERUPDATESUCCESS', e => {
+      this.setState(e);
+    });
   }
 
   componentWillUnmount() {
-
+    this.listener && this.listener.remove();
     clearTimeout(this.sto);
   }
 
@@ -57,7 +61,6 @@ export default class ViewWallpaper extends ViewBase {
         this.success('成功保存至相册');
         let wp = this.props.data;
         this.post(this.urls.DOWNLOAD, {id: wp.id}).then(e => {
-          this.setState({download_count: e.download_count});
           this.n.broadcast('WALLPAPERUPDATESUCCESS', e);
         });
       });
@@ -72,9 +75,9 @@ export default class ViewWallpaper extends ViewBase {
       return;
     }
     this.post(this.urls.FAVORITE, {id: this.props.data.id, type: 'Wallpaper'}).then(e => {
-      this.setState({favorite_count: e.favorite_count, is_favorite: e.is_favorite});
+      this.success(e.is_favorite ? '已收藏' : '已取消');
       this.n.broadcast('WALLPAPERUPDATESUCCESS', e);
-    }, this.errorHandler);
+    }, this.errorHandler.bind(this));
   }
 
   onCommentPress() {
@@ -85,8 +88,8 @@ export default class ViewWallpaper extends ViewBase {
         id: this.props.data.id,
         type: 'Wallpaper',
         image: this.props.data.image,
-        score: this.props.data.score,
-        comment_count: this.props.data.comment_count
+        score: this.state.score,
+        comment_count: this.state.comment_count
       }
     });
   }
