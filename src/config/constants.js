@@ -1,5 +1,5 @@
-// const baseURL = 'http://192.168.0.208:3000/';
-const baseURL = 'http://192.168.1.153:3000/';
+const baseURL = 'http://192.168.0.208:3000/';
+// const baseURL = 'http://192.168.1.153:3000/';
 export const URLs = {
   CAPTCHA: `${baseURL}api/captcha`,                                       // 图形验证码
   LOGIN: `${baseURL}api/user/login`,                                      // 登录
